@@ -361,14 +361,20 @@ const DEFAULT_SONGS: Song[] = [
       { label: "20c m.32", bpm: 145 },
     ],
   },
-  { num: 21, id: "20C-21A", title: "Mayzie in Palm Beach" },
+  {
+    num: 21,
+    id: "20C-21A",
+    title: "Mayzie in Palm Beach",
+    sections: [
+      { label: "21 m.1", bpm: 200 },
+      { label: "21 m.10a", bpm: 115 },
+    ],
+  },
   {
     num: "21A",
     id: "20C-21A",
     title: "Mayzie at the Circus",
     sections: [
-      { label: "21 m.1", bpm: 200 },
-      { label: "21 m.10a", bpm: 115 },
       { label: "21a m.1", bpm: 120 },
       { label: "21a m.9", bpm: 153 },
       { label: "21a m.15", bpm: 137 },
@@ -943,7 +949,7 @@ const Index = () => {
                       setIsMetronomePlaying(true);
                       toast({
                         title: "Metronome Set",
-                        description: `Playing ${sec.bpm} BPM (${sec.label})`,
+                        description: `Playing {sec.bpm} BPM ({sec.label})`,
                       });
                     }}
                     className="font-serif text-base font-bold text-[#e8c547] hover:underline text-right w-10 shrink-0 cursor-pointer"
@@ -972,7 +978,7 @@ const Index = () => {
             setIsMetronomePlaying(true);
             toast({
               title: "Metronome Set",
-              description: `Playing ${bpmVal} BPM`,
+              description: `Playing {bpmVal} BPM`,
             });
           }}
           className="font-serif text-2xl font-bold text-[#e8c547] hover:underline cursor-pointer"
@@ -995,7 +1001,7 @@ const Index = () => {
                 setIsMetronomePlaying(true);
                 toast({
                   title: "Metronome Set",
-                  description: `Playing T${i + 1} (${b} BPM)`,
+                  description: `Playing T{i + 1} ({b} BPM)`,
                 });
               }}
               className="font-mono text-[11px] font-medium px-2 py-0.5 rounded-full border border-opacity-30 bg-opacity-10 hover:bg-opacity-20 transition-all cursor-pointer"
@@ -1835,7 +1841,7 @@ const Index = () => {
             <div className="space-y-4">
               <p className="text-xs text-[#7a7a94] font-mono">
                 {tapTimes.length > 0
-                  ? `Registered ${tapTimes.length} taps. Keep tapping to refine.`
+                  ? `Registered {tapTimes.length} taps. Keep tapping to refine.`
                   : "No taps registered yet."}
               </p>
 
@@ -1855,7 +1861,7 @@ const Index = () => {
                       setActiveTab("metronome");
                       toast({
                         title: "Tempo Applied",
-                        description: `Set metronome to ${tapBpm} BPM`,
+                        description: `Set metronome to {tapBpm} BPM`,
                       });
                     }}
                     className="bg-[#7eb8f7] text-[#0e0e12] hover:bg-[#6aa4e3] font-mono text-xs"
