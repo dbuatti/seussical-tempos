@@ -457,6 +457,9 @@ const DEFAULT_SONGS: Song[] = [
     num: 35,
     id: "24B 1",
     title: "A Message from the Front / Solla Sollew (Reprise)",
+    sections: [
+      { label: "m.1", bpm: 120 }
+    ]
   },
   { num: 36, id: "24B 2-26C", title: "Message from the Front / Havin' a Hunch" },
   { num: 37, id: "27 1", title: "Gertrude Espionage — Part 1" },
@@ -566,14 +569,14 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v6 to force load the updated default lists
+  // Changed storage keys to v7 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v6");
+    const saved = localStorage.getItem("seussical_songs_v7");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v6");
+    const saved = localStorage.getItem("seussical_notes_v7");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -619,11 +622,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v6", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v7", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v6", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v7", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -930,8 +933,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v6");
-      localStorage.removeItem("seussical_notes_v6");
+      localStorage.removeItem("seussical_songs_v7");
+      localStorage.removeItem("seussical_notes_v7");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
@@ -1067,7 +1070,7 @@ const Index = () => {
                 setIsMetronomePlaying(true);
                 toast({
                   title: "Metronome Set",
-                  description: `Playing T{i + 1} (${b} BPM)`,
+                  description: `Playing T${i + 1} (${b} BPM)`,
                 });
               }}
               className="font-mono text-[11px] font-medium px-2 py-0.5 rounded-full border border-opacity-30 bg-opacity-10 hover:bg-opacity-20 transition-all cursor-pointer"
