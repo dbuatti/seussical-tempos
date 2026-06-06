@@ -434,7 +434,25 @@ const DEFAULT_SONGS: Song[] = [
       { label: "m.10", bpm: 132 },
     ],
   },
-  { num: 24, id: "24-24A", title: "Into the Who's Christmas Pageant" },
+  {
+    num: 24,
+    id: "24-24A",
+    title: "Into the Who's Christmas Pageant",
+    sections: [
+      { label: "m.1", bpm: 127 },
+      { label: "m.11", bpm: 127 },
+    ],
+  },
+  {
+    num: "24A",
+    id: "24-24A",
+    title: "Into the Who's Christmas Pageant (Part 2)",
+    sections: [
+      { label: "m.1", bpm: 126 },
+      { label: "m.1 Rit.", bpm: 98 },
+      { label: "m.2", bpm: 98 },
+    ],
+  },
   {
     num: 35,
     id: "24B 1",
@@ -548,14 +566,14 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v5 to force load the updated default lists
+  // Changed storage keys to v6 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v5");
+    const saved = localStorage.getItem("seussical_songs_v6");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v5");
+    const saved = localStorage.getItem("seussical_notes_v6");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -601,11 +619,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v5", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v6", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v5", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v6", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -912,8 +930,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v5");
-      localStorage.removeItem("seussical_notes_v5");
+      localStorage.removeItem("seussical_songs_v6");
+      localStorage.removeItem("seussical_notes_v6");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
