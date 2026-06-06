@@ -531,20 +531,31 @@ const DEFAULT_NOTES: NoteGroup[] = [
       },
     ],
   },
+  {
+    num: "24A",
+    id: "24-24A",
+    title: "Into the Who's Christmas Pageant",
+    items: [
+      {
+        tag: "repeat",
+        text: "m.1: only repeat bar 1 TWICE.",
+      },
+    ],
+  },
 ];
 
 const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v4 to force load the updated default lists
+  // Changed storage keys to v5 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v4");
+    const saved = localStorage.getItem("seussical_songs_v5");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v4");
+    const saved = localStorage.getItem("seussical_notes_v5");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -590,11 +601,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v4", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v5", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v4", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v5", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -901,8 +912,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v4");
-      localStorage.removeItem("seussical_notes_v4");
+      localStorage.removeItem("seussical_songs_v5");
+      localStorage.removeItem("seussical_notes_v5");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
@@ -1038,7 +1049,7 @@ const Index = () => {
                 setIsMetronomePlaying(true);
                 toast({
                   title: "Metronome Set",
-                  description: `Playing T${i + 1} (${b} BPM)`,
+                  description: `Playing T{i + 1} (${b} BPM)`,
                 });
               }}
               className="font-mono text-[11px] font-medium px-2 py-0.5 rounded-full border border-opacity-30 bg-opacity-10 hover:bg-opacity-20 transition-all cursor-pointer"
