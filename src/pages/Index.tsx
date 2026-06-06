@@ -553,6 +553,17 @@ const DEFAULT_NOTES: NoteGroup[] = [
     ],
   },
   {
+    num: "24",
+    id: "24-24A",
+    title: "Into the Who's Christmas Pageant",
+    items: [
+      {
+        tag: "general",
+        text: "Bar 6 of 24/d is semi dictated but relatively in time.",
+      },
+    ],
+  },
+  {
     num: "24A",
     id: "24-24A",
     title: "Into the Who's Christmas Pageant",
@@ -569,14 +580,14 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v7 to force load the updated default lists
+  // Changed storage keys to v8 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v7");
+    const saved = localStorage.getItem("seussical_songs_v8");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v7");
+    const saved = localStorage.getItem("seussical_notes_v8");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -622,11 +633,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v7", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v8", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v7", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v8", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -933,8 +944,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v7");
-      localStorage.removeItem("seussical_notes_v7");
+      localStorage.removeItem("seussical_songs_v8");
+      localStorage.removeItem("seussical_notes_v8");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
@@ -1080,7 +1091,7 @@ const Index = () => {
                 backgroundColor: ["#e8c547", "#7eb8f7", "#f07a5a", "#5ecb8a", "#c084fc"][i % 5] + "11",
               }}
             >
-              T{i + 1} {b}
+              T${i + 1} {b}
             </button>
           </React.Fragment>
         ))}
