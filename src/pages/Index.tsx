@@ -501,13 +501,14 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
+  // Changed storage keys to v2 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs");
+    const saved = localStorage.getItem("seussical_songs_v2");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes");
+    const saved = localStorage.getItem("seussical_notes_v2");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -553,11 +554,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v2", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v2", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -864,8 +865,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs");
-      localStorage.removeItem("seussical_notes");
+      localStorage.removeItem("seussical_songs_v2");
+      localStorage.removeItem("seussical_notes_v2");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
@@ -949,7 +950,7 @@ const Index = () => {
                       setIsMetronomePlaying(true);
                       toast({
                         title: "Metronome Set",
-                        description: `Playing {sec.bpm} BPM ({sec.label})`,
+                        description: `Playing ${sec.bpm} BPM (${sec.label})`,
                       });
                     }}
                     className="font-serif text-base font-bold text-[#e8c547] hover:underline text-right w-10 shrink-0 cursor-pointer"
@@ -978,7 +979,7 @@ const Index = () => {
             setIsMetronomePlaying(true);
             toast({
               title: "Metronome Set",
-              description: `Playing {bpmVal} BPM`,
+              description: `Playing ${bpmVal} BPM`,
             });
           }}
           className="font-serif text-2xl font-bold text-[#e8c547] hover:underline cursor-pointer"
@@ -1001,7 +1002,7 @@ const Index = () => {
                 setIsMetronomePlaying(true);
                 toast({
                   title: "Metronome Set",
-                  description: `Playing T{i + 1} ({b} BPM)`,
+                  description: `Playing T${i + 1} (${b} BPM)`,
                 });
               }}
               className="font-mono text-[11px] font-medium px-2 py-0.5 rounded-full border border-opacity-30 bg-opacity-10 hover:bg-opacity-20 transition-all cursor-pointer"
@@ -1841,7 +1842,7 @@ const Index = () => {
             <div className="space-y-4">
               <p className="text-xs text-[#7a7a94] font-mono">
                 {tapTimes.length > 0
-                  ? `Registered {tapTimes.length} taps. Keep tapping to refine.`
+                  ? `Registered ${tapTimes.length} taps. Keep tapping to refine.`
                   : "No taps registered yet."}
               </p>
 
@@ -1861,7 +1862,7 @@ const Index = () => {
                       setActiveTab("metronome");
                       toast({
                         title: "Tempo Applied",
-                        description: `Set metronome to {tapBpm} BPM`,
+                        description: `Set metronome to ${tapBpm} BPM`,
                       });
                     }}
                     className="bg-[#7eb8f7] text-[#0e0e12] hover:bg-[#6aa4e3] font-mono text-xs"
