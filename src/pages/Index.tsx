@@ -461,7 +461,34 @@ const DEFAULT_SONGS: Song[] = [
       { label: "m.1", bpm: 120 }
     ]
   },
-  { num: 36, id: "24B 2-26C", title: "Message from the Front / Havin' a Hunch" },
+  {
+    num: 36,
+    id: "24B 2-26C",
+    title: "Message from the Front / Havin' a Hunch",
+    sections: [
+      { label: "24b m.40", bpm: 116 },
+      { label: "24b m.46", bpm: 113 },
+      { label: "24c m.57", bpm: 119 },
+      { label: "24c m.71", bpm: 114 },
+      { label: "24d m.1", bpm: 118 },
+      { label: "24d m.9", bpm: 117 },
+      { label: "25 m.1", bpm: 141 },
+      { label: "25 m.8", bpm: 140 },
+      { label: "26 m.5", bpm: 162 },
+      { label: "26 m.33", bpm: 163 },
+      { label: "26 m.39", bpm: 161 },
+      { label: "26a m.1", bpm: 161 },
+      { label: "26a m.17", bpm: 158 },
+      { label: "26a m.39", bpm: 155 },
+      { label: "26b m.1", bpm: 157 },
+      { label: "26b m.10", bpm: 112 },
+      { label: "26b m.12", bpm: 158 },
+      { label: "26b m.22", bpm: 158 },
+      { label: "26b m.28", bpm: 135 },
+      { label: "26c m.1", bpm: 164 },
+      { label: "26c m.25", bpm: 158 },
+    ]
+  },
   { num: 37, id: "27 1", title: "Gertrude Espionage — Part 1" },
   { num: 38, id: "27 2", title: "Gertrude Espionage — Part 2" },
   { num: 39, id: "27A-27B", title: "All for You (Verse) / All for You" },
@@ -580,14 +607,14 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v8 to force load the updated default lists
+  // Changed storage keys to v9 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v8");
+    const saved = localStorage.getItem("seussical_songs_v9");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v8");
+    const saved = localStorage.getItem("seussical_notes_v9");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -633,11 +660,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v8", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v9", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v8", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v9", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -944,8 +971,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v8");
-      localStorage.removeItem("seussical_notes_v8");
+      localStorage.removeItem("seussical_songs_v9");
+      localStorage.removeItem("seussical_notes_v9");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
@@ -1081,7 +1108,7 @@ const Index = () => {
                 setIsMetronomePlaying(true);
                 toast({
                   title: "Metronome Set",
-                  description: `Playing T${i + 1} (${b} BPM)`,
+                  description: `Playing T\${i + 1} (\${b} BPM)`,
                 });
               }}
               className="font-mono text-[11px] font-medium px-2 py-0.5 rounded-full border border-opacity-30 bg-opacity-10 hover:bg-opacity-20 transition-all cursor-pointer"
@@ -1091,7 +1118,7 @@ const Index = () => {
                 backgroundColor: ["#e8c547", "#7eb8f7", "#f07a5a", "#5ecb8a", "#c084fc"][i % 5] + "11",
               }}
             >
-              T${i + 1} {b}
+              T{i + 1} {b}
             </button>
           </React.Fragment>
         ))}
@@ -1716,7 +1743,7 @@ const Index = () => {
             <div className="space-y-6">
               {notes.map((group, groupIdx) => (
                 <div
-                  key={`${group.num}-${groupIdx}`}
+                  key={`${group.num}-\${groupIdx}`}
                   className="bg-[#16161c] border border-[#2a2a38] rounded-xl overflow-hidden"
                 >
                   <div className="flex items-center justify-between px-5 py-4 border-b border-[#2a2a38] bg-[#1e1e27]">
@@ -1805,7 +1832,7 @@ const Index = () => {
           <div className="max-w-md mx-auto bg-[#16161c] border border-[#2a2a38] rounded-2xl p-8 text-center relative overflow-hidden">
             {/* Visual Flash Ring */}
             <div
-              className={`absolute inset-0 border-2 rounded-2xl pointer-events-none transition-all duration-75 ${
+              className={`absolute inset-0 border-2 rounded-2xl pointer-events-none transition-all duration-75 \${
                 flash ? "border-[#e8c547] opacity-100 scale-[0.99]" : "border-transparent opacity-0 scale-100"
               }`}
             />
@@ -1815,7 +1842,7 @@ const Index = () => {
             {/* BPM Display */}
             <div className="mb-8 relative inline-block">
               <div
-                className={`w-32 h-32 rounded-full mx-auto flex flex-col items-center justify-center border-4 transition-all duration-75 ${
+                className={`w-32 h-32 rounded-full mx-auto flex flex-col items-center justify-center border-4 transition-all duration-75 \${
                   flash
                     ? "border-[#e8c547] bg-[#e8c547]/10 scale-105"
                     : "border-[#2a2a38] bg-[#0e0e12]"
@@ -1859,7 +1886,7 @@ const Index = () => {
                     onClick={() => setMetronomeBpm(Math.max(40, Math.min(250, metronomeBpm + val)))}
                     className="bg-[#0e0e12] border-[#2a2a38] text-[#7a7a94] hover:text-[#e8e8f0] hover:bg-[#1e1e27] font-mono text-xs px-2.5 h-8"
                   >
-                    {val > 0 ? `+${val}` : val}
+                    {val > 0 ? `+\${val}` : val}
                   </Button>
                 ))}
               </div>
@@ -1870,7 +1897,7 @@ const Index = () => {
                   variant="outline"
                   size="icon"
                   onClick={() => setIsMuted(!isMuted)}
-                  className={`w-12 h-12 rounded-full border-[#2a2a38] ${
+                  className={`w-12 h-12 rounded-full border-[#2a2a38] \${
                     isMuted ? "text-red-400 bg-red-950/10" : "text-[#7a7a94] hover:text-[#e8e8f0]"
                   }`}
                 >
@@ -1879,7 +1906,7 @@ const Index = () => {
 
                 <Button
                   onClick={() => setIsMetronomePlaying(!isMetronomePlaying)}
-                  className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${
+                  className={`w-16 h-16 rounded-full flex items-center justify-center transition-all \${
                     isMetronomePlaying
                       ? "bg-red-500 hover:bg-red-600 text-white"
                       : "bg-[#e8c547] hover:bg-[#d4b33b] text-[#0e0e12]"
@@ -1921,7 +1948,7 @@ const Index = () => {
             <div className="space-y-4">
               <p className="text-xs text-[#7a7a94] font-mono">
                 {tapTimes.length > 0
-                  ? `Registered ${tapTimes.length} taps. Keep tapping to refine.`
+                  ? `Registered \${tapTimes.length} taps. Keep tapping to refine.`
                   : "No taps registered yet."}
               </p>
 
@@ -1941,7 +1968,7 @@ const Index = () => {
                       setActiveTab("metronome");
                       toast({
                         title: "Tempo Applied",
-                        description: `Set metronome to ${tapBpm} BPM`,
+                        description: `Set metronome to \${tapBpm} BPM`,
                       });
                     }}
                     className="bg-[#7eb8f7] text-[#0e0e12] hover:bg-[#6aa4e3] font-mono text-xs"
