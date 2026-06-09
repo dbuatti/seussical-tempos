@@ -545,11 +545,6 @@ const DEFAULT_SONGS: Song[] = [
       { label: "27a.48", bpm: 153 },
       { label: "27a.50", bpm: 138 },
       { label: "27a.52", bpm: 119 },
-      { label: "27b.1", bpm: 163 },
-      { label: "27b.9", bpm: 158 },
-      { label: "27b.15", bpm: 153 },
-      { label: "27b.33", bpm: 121 },
-      { label: "27b.41", bpm: 125 },
     ],
   },
   {
@@ -561,6 +556,13 @@ const DEFAULT_SONGS: Song[] = [
     num: "27B",
     id: "27B",
     title: "All for You...",
+    sections: [
+      { label: "27b.1", bpm: 163 },
+      { label: "27b.9", bpm: 158 },
+      { label: "27b.15", bpm: 153 },
+      { label: "27b.33", bpm: 121 },
+      { label: "27b.41", bpm: 125 },
+    ],
   },
   {
     num: "27C",
