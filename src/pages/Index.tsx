@@ -535,7 +535,16 @@ const DEFAULT_SONGS: Song[] = [
     id: "27",
     title: "Gertrude / Espionage",
     sections: [
-      { label: "27a.1", bpm: 95 },
+      { label: "m.1", bpm: 95 },
+      { label: "m.8", bpm: 84 },
+    ],
+  },
+  {
+    num: "27A",
+    id: "27A",
+    title: "All for You (Verse)",
+    sections: [
+      { label: "27a.2", bpm: 195 },
       { label: "27a.25", bpm: 195 },
       { label: "27a.35", bpm: 157 },
       { label: "27a.36", bpm: 126 },
@@ -546,11 +555,6 @@ const DEFAULT_SONGS: Song[] = [
       { label: "27a.50", bpm: 138 },
       { label: "27a.52", bpm: 119 },
     ],
-  },
-  {
-    num: "27A",
-    id: "27A",
-    title: "All for You (Verse)",
   },
   {
     num: "27B",
