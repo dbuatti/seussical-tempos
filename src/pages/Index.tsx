@@ -489,8 +489,35 @@ const DEFAULT_SONGS: Song[] = [
       { label: "26c m.25", bpm: 158 },
     ]
   },
-  { num: 37, id: "27 1", title: "Gertrude Espionage — Part 1" },
-  { num: 38, id: "27 2", title: "Gertrude Espionage — Part 2" },
+  {
+    num: 37,
+    id: "27 1",
+    title: "Gertrude Espionage — Part 1",
+    sections: [
+      { label: "27a.1", bpm: 95 },
+      { label: "27a.25", bpm: 195 },
+      { label: "27a.35", bpm: 157 },
+      { label: "27a.36", bpm: 126 },
+      { label: "27a.38", bpm: 205 },
+      { label: "27a.42", bpm: 209 },
+      { label: "27a.42", bpm: 156 },
+      { label: "27a.48", bpm: 153 },
+      { label: "27a.50", bpm: 138 },
+      { label: "27a.52", bpm: 119 },
+    ]
+  },
+  {
+    num: 38,
+    id: "27 2",
+    title: "Gertrude Espionage — Part 2",
+    sections: [
+      { label: "27b.1", bpm: 163 },
+      { label: "27b.9", bpm: 158 },
+      { label: "27b.15", bpm: 153 },
+      { label: "27b.33", bpm: 121 },
+      { label: "27b.41", bpm: 125 },
+    ]
+  },
   { num: 39, id: "27A-27B", title: "All for You (Verse) / All for You" },
   { num: 40, id: "27C", title: "The Whos Return" },
   { num: 41, id: "28-28B 1", title: "People vs Horton (Pt 1–3)" },
@@ -607,14 +634,14 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v9 to force load the updated default lists
+  // Changed storage keys to v10 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v9");
+    const saved = localStorage.getItem("seussical_songs_v10");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v9");
+    const saved = localStorage.getItem("seussical_notes_v10");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -660,11 +687,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v9", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v10", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v9", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v10", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -971,8 +998,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v9");
-      localStorage.removeItem("seussical_notes_v9");
+      localStorage.removeItem("seussical_songs_v10");
+      localStorage.removeItem("seussical_notes_v10");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
@@ -1108,7 +1135,7 @@ const Index = () => {
                 setIsMetronomePlaying(true);
                 toast({
                   title: "Metronome Set",
-                  description: `Playing T\${i + 1} (\${b} BPM)`,
+                  description: `Playing T${i + 1} (${b} BPM)`,
                 });
               }}
               className="font-mono text-[11px] font-medium px-2 py-0.5 rounded-full border border-opacity-30 bg-opacity-10 hover:bg-opacity-20 transition-all cursor-pointer"
@@ -1118,7 +1145,7 @@ const Index = () => {
                 backgroundColor: ["#e8c547", "#7eb8f7", "#f07a5a", "#5ecb8a", "#c084fc"][i % 5] + "11",
               }}
             >
-              T{i + 1} {b}
+              T${i + 1} {b}
             </button>
           </React.Fragment>
         ))}
@@ -1948,7 +1975,7 @@ const Index = () => {
             <div className="space-y-4">
               <p className="text-xs text-[#7a7a94] font-mono">
                 {tapTimes.length > 0
-                  ? `Registered \${tapTimes.length} taps. Keep tapping to refine.`
+                  ? `Registered ${tapTimes.length} taps. Keep tapping to refine.`
                   : "No taps registered yet."}
               </p>
 
@@ -1968,7 +1995,7 @@ const Index = () => {
                       setActiveTab("metronome");
                       toast({
                         title: "Tempo Applied",
-                        description: `Set metronome to \${tapBpm} BPM`,
+                        description: `Set metronome to ${tapBpm} BPM`,
                       });
                     }}
                     className="bg-[#7eb8f7] text-[#0e0e12] hover:bg-[#6aa4e3] font-mono text-xs"
