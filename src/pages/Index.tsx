@@ -519,7 +519,15 @@ const DEFAULT_SONGS: Song[] = [
     ]
   },
   { num: 39, id: "27A-27B", title: "All for You (Verse) / All for You" },
-  { num: 40, id: "27C", title: "The Whos Return" },
+  {
+    num: 40,
+    id: "27C",
+    title: "The Whos Return",
+    sections: [
+      { label: "27c.2", bpm: 85 },
+      { label: "27c.6", bpm: 80 },
+    ]
+  },
   { num: 41, id: "28-28B 1", title: "People vs Horton (Pt 1–3)" },
   { num: 42, id: "28B 2-28C", title: "People vs Horton (Pt 3–4)" },
   { num: 43, id: "28D", title: "Yopp / Alone in the Universe (Reprise)" },
@@ -634,14 +642,14 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v10 to force load the updated default lists
+  // Changed storage keys to v11 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v10");
+    const saved = localStorage.getItem("seussical_songs_v11");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v10");
+    const saved = localStorage.getItem("seussical_notes_v11");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -687,11 +695,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v10", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v11", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v10", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v11", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -998,8 +1006,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v10");
-      localStorage.removeItem("seussical_notes_v10");
+      localStorage.removeItem("seussical_songs_v11");
+      localStorage.removeItem("seussical_notes_v11");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
@@ -1135,7 +1143,7 @@ const Index = () => {
                 setIsMetronomePlaying(true);
                 toast({
                   title: "Metronome Set",
-                  description: `Playing T${i + 1} (${b} BPM)`,
+                  description: `Playing T\${i + 1} (\${b} BPM)`,
                 });
               }}
               className="font-mono text-[11px] font-medium px-2 py-0.5 rounded-full border border-opacity-30 bg-opacity-10 hover:bg-opacity-20 transition-all cursor-pointer"
@@ -1145,7 +1153,7 @@ const Index = () => {
                 backgroundColor: ["#e8c547", "#7eb8f7", "#f07a5a", "#5ecb8a", "#c084fc"][i % 5] + "11",
               }}
             >
-              T${i + 1} {b}
+              T{i + 1} {b}
             </button>
           </React.Fragment>
         ))}
@@ -1913,7 +1921,7 @@ const Index = () => {
                     onClick={() => setMetronomeBpm(Math.max(40, Math.min(250, metronomeBpm + val)))}
                     className="bg-[#0e0e12] border-[#2a2a38] text-[#7a7a94] hover:text-[#e8e8f0] hover:bg-[#1e1e27] font-mono text-xs px-2.5 h-8"
                   >
-                    {val > 0 ? `+\${val}` : val}
+                    {val > 0 ? `+\\${val}` : val}
                   </Button>
                 ))}
               </div>
@@ -1975,7 +1983,7 @@ const Index = () => {
             <div className="space-y-4">
               <p className="text-xs text-[#7a7a94] font-mono">
                 {tapTimes.length > 0
-                  ? `Registered ${tapTimes.length} taps. Keep tapping to refine.`
+                  ? `Registered \${tapTimes.length} taps. Keep tapping to refine.`
                   : "No taps registered yet."}
               </p>
 
@@ -1995,7 +2003,7 @@ const Index = () => {
                       setActiveTab("metronome");
                       toast({
                         title: "Tempo Applied",
-                        description: `Set metronome to ${tapBpm} BPM`,
+                        description: `Set metronome to \${tapBpm} BPM`,
                       });
                     }}
                     className="bg-[#7eb8f7] text-[#0e0e12] hover:bg-[#6aa4e3] font-mono text-xs"
