@@ -56,7 +56,6 @@ interface NoteGroup {
 
 // ── DEFAULT DATA ──
 const DEFAULT_SONGS: Song[] = [
-  { num: 1, id: "31", title: "Exit Music" },
   {
     num: "1A",
     id: "01-01D",
@@ -436,7 +435,7 @@ const DEFAULT_SONGS: Song[] = [
   },
   {
     num: 24,
-    id: "24-24A",
+    id: "24",
     title: "Into the Who's Christmas Pageant",
     sections: [
       { label: "m.1", bpm: 127 },
@@ -445,8 +444,8 @@ const DEFAULT_SONGS: Song[] = [
   },
   {
     num: "24A",
-    id: "24-24A",
-    title: "Into the Who's Christmas Pageant (Part 2)",
+    id: "24A",
+    title: "The Grinch Carved the Roast Beast",
     sections: [
       { label: "m.1", bpm: 126 },
       { label: "m.1 Rit.", bpm: 98 },
@@ -454,45 +453,87 @@ const DEFAULT_SONGS: Song[] = [
     ],
   },
   {
-    num: 35,
-    id: "24B 1",
+    num: "24B",
+    id: "24B",
     title: "A Message from the Front / Solla Sollew (Reprise)",
     sections: [
-      { label: "m.1", bpm: 120 }
-    ]
+      { label: "m.1", bpm: 120 },
+      { label: "m.40", bpm: 116 },
+      { label: "m.46", bpm: 113 },
+    ],
   },
   {
-    num: 36,
-    id: "24B 2-26C",
-    title: "Message from the Front / Havin' a Hunch",
+    num: "24C",
+    id: "24C",
+    title: "How Sad",
     sections: [
-      { label: "24b m.40", bpm: 116 },
-      { label: "24b m.46", bpm: 113 },
-      { label: "24c m.57", bpm: 119 },
-      { label: "24c m.71", bpm: 114 },
-      { label: "24d m.1", bpm: 118 },
-      { label: "24d m.9", bpm: 117 },
-      { label: "25 m.1", bpm: 141 },
-      { label: "25 m.8", bpm: 140 },
-      { label: "26 m.5", bpm: 162 },
-      { label: "26 m.33", bpm: 163 },
-      { label: "26 m.39", bpm: 161 },
-      { label: "26a m.1", bpm: 161 },
-      { label: "26a m.17", bpm: 158 },
-      { label: "26a m.39", bpm: 155 },
-      { label: "26b m.1", bpm: 157 },
-      { label: "26b m.10", bpm: 112 },
-      { label: "26b m.12", bpm: 158 },
-      { label: "26b m.22", bpm: 158 },
-      { label: "26b m.28", bpm: 135 },
-      { label: "26c m.1", bpm: 164 },
-      { label: "26c m.25", bpm: 158 },
-    ]
+      { label: "m.57", bpm: 119 },
+      { label: "m.71", bpm: 114 },
+    ],
   },
   {
-    num: 37,
-    id: "27 1",
-    title: "Gertrude Espionage — Part 1",
+    num: "24D",
+    id: "24D",
+    title: "A Re-enactment",
+    sections: [
+      { label: "m.1", bpm: 118 },
+      { label: "m.9", bpm: 117 },
+    ],
+  },
+  {
+    num: 25,
+    id: "25",
+    title: "JoJo Alone in the Universe",
+    sections: [
+      { label: "m.1", bpm: 141 },
+      { label: "m.8", bpm: 140 },
+    ],
+  },
+  {
+    num: 26,
+    id: "26",
+    title: "Havin' a Hunch",
+    sections: [
+      { label: "m.5", bpm: 162 },
+      { label: "m.33", bpm: 163 },
+      { label: "m.39", bpm: 161 },
+    ],
+  },
+  {
+    num: "26A",
+    id: "26A",
+    title: "Havin' a Hunch (Part 2: Nightmare Ballet)",
+    sections: [
+      { label: "m.1", bpm: 161 },
+      { label: "m.17", bpm: 158 },
+      { label: "m.39", bpm: 155 },
+    ],
+  },
+  {
+    num: "26B",
+    id: "26B",
+    title: "Havin' a Hunch (Part 3: Oh, the Thinks!)",
+    sections: [
+      { label: "m.1", bpm: 157 },
+      { label: "m.10", bpm: 112 },
+      { label: "m.12", bpm: 158 },
+      { label: "m.22", bpm: 158 },
+      { label: "m.28", bpm: 135 },
+    ],
+  },
+  {
+    num: "26C",
+    id: "26C",
+    title: "Havin' a Hunch (Part 4)",
+    sections: [
+      { label: "m.1", bpm: 164 },
+      { label: "m.25", bpm: 158 },
+    ],
+  },
+  {
+    num: 27,
+    id: "27",
+    title: "Gertrude / Espionage",
     sections: [
       { label: "27a.1", bpm: 95 },
       { label: "27a.25", bpm: 195 },
@@ -504,39 +545,72 @@ const DEFAULT_SONGS: Song[] = [
       { label: "27a.48", bpm: 153 },
       { label: "27a.50", bpm: 138 },
       { label: "27a.52", bpm: 119 },
-    ]
-  },
-  {
-    num: 38,
-    id: "27 2",
-    title: "Gertrude Espionage — Part 2",
-    sections: [
       { label: "27b.1", bpm: 163 },
       { label: "27b.9", bpm: 158 },
       { label: "27b.15", bpm: 153 },
       { label: "27b.33", bpm: 121 },
       { label: "27b.41", bpm: 125 },
-    ]
+    ],
   },
-  { num: 39, id: "27A-27B", title: "All for You (Verse) / All for You" },
   {
-    num: 40,
+    num: "27A",
+    id: "27A",
+    title: "All for You (Verse)",
+  },
+  {
+    num: "27B",
+    id: "27B",
+    title: "All for You...",
+  },
+  {
+    num: "27C",
     id: "27C",
     title: "The Whos Return",
     sections: [
       { label: "27c.2", bpm: 85 },
       { label: "27c.6", bpm: 80 },
-    ]
+    ],
   },
-  { num: 41, id: "28-28B 1", title: "People vs Horton (Pt 1–3)" },
-  { num: 42, id: "28B 2-28C", title: "People vs Horton (Pt 3–4)" },
-  { num: 43, id: "28D", title: "Yopp / Alone in the Universe (Reprise)" },
   {
-    num: 44,
-    id: "29",
-    title: "Oh, the Thinks You Can Think (Finale Act 2)",
+    num: 28,
+    id: "28",
+    title: "The People Versus Horton the Elephant (Part 1)",
   },
-  { num: 45, id: "30", title: "Green Eggs and Ham (Final Bows)" },
+  {
+    num: "28A",
+    id: "28A",
+    title: "The People Versus Horton the Elephant (Part 2)",
+  },
+  {
+    num: "28B",
+    id: "28B",
+    title: "The People Versus Horton the Elephant (Part 3)",
+  },
+  {
+    num: "28C",
+    id: "28C",
+    title: "The People Versus Horton the Elephant (Part 4)",
+  },
+  {
+    num: "28D",
+    id: "28D",
+    title: "Yopp!/Alone in the Universe (Reprise)",
+  },
+  {
+    num: 29,
+    id: "29",
+    title: "Oh, The Thinks You Can Think! (Finale Act 2)",
+  },
+  {
+    num: 30,
+    id: "30",
+    title: "Green Eggs And Ham (Finale Bows: Swing)",
+  },
+  {
+    num: 31,
+    id: "31",
+    title: "Exit Music",
+  },
 ];
 
 const DEFAULT_NOTES: NoteGroup[] = [
@@ -642,14 +716,14 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v11 to force load the updated default lists
+  // Changed storage keys to v12 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v11");
+    const saved = localStorage.getItem("seussical_songs_v12");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v11");
+    const saved = localStorage.getItem("seussical_notes_v12");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -695,11 +769,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v11", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v12", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v11", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v12", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -1006,8 +1080,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v11");
-      localStorage.removeItem("seussical_notes_v11");
+      localStorage.removeItem("seussical_songs_v12");
+      localStorage.removeItem("seussical_notes_v12");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
@@ -1921,7 +1995,7 @@ const Index = () => {
                     onClick={() => setMetronomeBpm(Math.max(40, Math.min(250, metronomeBpm + val)))}
                     className="bg-[#0e0e12] border-[#2a2a38] text-[#7a7a94] hover:text-[#e8e8f0] hover:bg-[#1e1e27] font-mono text-xs px-2.5 h-8"
                   >
-                    {val > 0 ? `+\\${val}` : val}
+                    {val > 0 ? `+\${val}` : val}
                   </Button>
                 ))}
               </div>
