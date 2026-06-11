@@ -1620,10 +1620,22 @@ const Index = () => {
           };
 
           return (
-            <div className="fixed inset-0 bg-[#0e0e12] z-50 flex flex-col landscape:flex-row select-none">
+            <div
+              className="fixed inset-0 bg-[#0e0e12] z-50 flex flex-col landscape:flex-row select-none"
+              style={{
+                paddingTop: "env(safe-area-inset-top)",
+                paddingBottom: "env(safe-area-inset-bottom)",
+                paddingLeft: "env(safe-area-inset-left)",
+                paddingRight: "env(safe-area-inset-right)",
+              }}
+            >
               <button
                 onClick={() => { setIsMetronomePlaying(false); setActiveTab("tempos"); }}
-                className="absolute top-3 right-3 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-[#16161c] border border-[#2a2a38] text-[#7a7a94] hover:text-[#e8e8f0] hover:bg-[#1e1e27] active:scale-95 transition-all"
+                style={{
+                  top: "max(0.75rem, env(safe-area-inset-top))",
+                  right: "max(0.75rem, env(safe-area-inset-right))",
+                }}
+                className="absolute z-10 w-10 h-10 flex items-center justify-center rounded-full bg-[#16161c] border border-[#2a2a38] text-[#7a7a94] hover:text-[#e8e8f0] hover:bg-[#1e1e27] active:scale-95 transition-all"
               >
                 <X className="w-5 h-5" />
               </button>
