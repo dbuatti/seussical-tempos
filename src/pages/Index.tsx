@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useRef } from "react";
+import React, { useState, useEffect, useRef, useMemo } from "react";
 import { 
   Search, 
   Play, 
@@ -18,7 +18,10 @@ import {
   Clock, 
   Volume2, 
   VolumeX,
-  Save
+  Save,
+  Zap,
+  ChevronUp,
+  ChevronDown
 } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Button } from "@/components/ui/button";
@@ -60,7 +63,10 @@ const DEFAULT_SONGS: Song[] = [
     num: "1A",
     id: "01-01D",
     title: "Oh, The Thinks You Can Think! (Intro)",
-    sections: [{ label: "m.17", bpm: 176 }],
+    sections: [
+      { label: "m.A", bpm: 120 },
+    ],
+    feel: "Bar A: accelerando 116→128",
   },
   {
     num: "1A",
@@ -104,8 +110,6 @@ const DEFAULT_SONGS: Song[] = [
       { label: "m.99", bpm: 172 },
     ],
   },
-  { num: 3, id: "02-03", title: "Horton Hears a Who!" },
-  { num: 4, id: "04-04c", title: "Biggest Blame Fool" },
   {
     num: "4A",
     id: "04-04c",
@@ -246,22 +250,23 @@ const DEFAULT_SONGS: Song[] = [
   },
   {
     num: 11,
-    id: "09",
-    title: "The Military (Verse)",
+    id: "11",
+    title: "Gertrude McFuzz",
     sections: [
-      { label: "m.1", bpm: 151 },
-      { label: "9a m.4", bpm: 86 },
-      { label: "9a m.8", bpm: 99 },
-      { label: "9a m.13", bpm: 120 },
-      { label: "9b m.1", bpm: 122 },
-      { label: "9d m.1", bpm: 125 },
-      { label: "9e m.1", bpm: 122 },
+      { label: "m.1", bpm: 174 },
+      { label: "m.12", bpm: 174 },
+      { label: "m.33", bpm: 156 },
+      { label: "m.54", bpm: 204 },
     ],
   },
   {
     num: 12,
-    id: "09A-09E",
-    title: "The Military (Ghengis' Verse) / The Military Ploff",
+    id: "12",
+    title: "Amayzing Mayzie (Pt 1)",
+    sections: [
+      { label: "m.1", bpm: 201 },
+      { label: "m.85", bpm: 205 },
+    ],
   },
   {
     num: 13,
@@ -275,17 +280,89 @@ const DEFAULT_SONGS: Song[] = [
       { label: "10b m.19", bpm: 125 },
     ],
   },
-  { num: 14, id: "11-12", title: "Gertrude McFuzz / Amayzing Mayzie (Pt 1)" },
-  { num: 15, id: "12A 1", title: "Amayzing Gertrude (Pt 1) — Part 1" },
-  { num: 16, id: "12A 2", title: "Amayzing Gertrude (Pt 1) — Part 2" },
-  { num: 17, id: "12B 1", title: "Amayzing Gertrude (Pt 2)" },
-  { num: 18, id: "12B 2-13", title: "Amayzing Gertrude Pt 2 / Monkey Around" },
-  { num: 19, id: "14-14C", title: "Chasing the Whos (Pt 1–4)" },
-  { num: 20, id: "15", title: "How Lucky You Are" },
-  { num: 21, id: "16 1", title: "Notice Me, Horton — Part 1" },
-  { num: 22, id: "16-2", title: "Notice Me, Horton — Part 2" },
-  { num: 23, id: "16A", title: "How Lucky You Are (Reprise)" },
-  { num: 24, id: "16B-17B", title: "Mayzie's Exit Music / Finale (Pt 1–3)" },
+  {
+    num: 14,
+    id: "11-12",
+    title: "Gertrude McFuzz / Amayzing Mayzie (Pt 1)",
+    sections: [
+      { label: "11 m.1", bpm: 174 },
+      { label: "11 m.12", bpm: 174 },
+      { label: "11 m.33", bpm: 156 },
+      { label: "11 m.54", bpm: 204 },
+      { label: "12 m.1", bpm: 201 },
+      { label: "12 m.85", bpm: 205 },
+    ],
+  },
+  {
+    num: 15,
+    id: "12A 1",
+    title: "Amayzing Gertrude (Pt 1) — Part 1",
+    sections: [
+      { label: "12a m.1", bpm: 119 },
+    ],
+    feel: "♩.=119 (half of 238 minim)",
+  },
+  {
+    num: 18,
+    id: "12B 2-13",
+    title: "Amayzing Gertrude Pt 2 / Monkey Around",
+    sections: [
+      { label: "12b m.52", bpm: 122 },
+      { label: "13 m.1", bpm: 122 },
+    ],
+  },
+  {
+    num: 19,
+    id: "14-14C",
+    title: "Chasing the Whos (Pt 1–4)",
+    sections: [
+      { label: "m.1", bpm: 212 },
+      { label: "14c m.16", bpm: 155 },
+    ],
+  },
+  {
+    num: 20,
+    id: "15",
+    title: "How Lucky You Are",
+    sections: [
+      { label: "m.3", bpm: 140 },
+    ],
+  },
+  {
+    num: 21,
+    id: "16 1",
+    title: "Notice Me, Horton",
+    sections: [
+      { label: "m.1", bpm: 182 },
+      { label: "m.20", bpm: 89 },
+      { label: "m.28", bpm: 115 },
+      { label: "m.85", bpm: 135 },
+    ],
+  },
+  {
+    num: 23,
+    id: "16A",
+    title: "How Lucky You Are (Reprise)",
+    sections: [
+      { label: "m.1", bpm: 94 },
+    ],
+    feel: "♩ = 94",
+  },
+  {
+    num: 24,
+    id: "16B-17B",
+    title: "Mayzie's Exit Music / Finale (Pt 1–3)",
+    sections: [
+      { label: "16b m.1", bpm: 202 },
+      { label: "17 m.1", bpm: 186 },
+      { label: "17 m.29", bpm: 182 },
+      { label: "17a m.5", bpm: 186 },
+      { label: "17a m.19", bpm: 186 },
+      { label: "17a m.30", bpm: 196 },
+      { label: "17a m.50", bpm: 152 },
+      { label: "17b m.3", bpm: 142 },
+    ],
+  },
   {
     num: 25,
     id: "18",
@@ -744,6 +821,15 @@ const DEFAULT_NOTES: NoteGroup[] = [
     ]
   },
   {
+    num: "16b-17b",
+    id: "16B-17B",
+    title: "Mayzie's Exit Music / Finale (Pt 1–3)",
+    items: [
+      { tag: "repeat", text: "17b, bar 47-48: Three times as written (cast has been practising it 4 times due to error in score) (MORGAN)" },
+      { tag: "timing", text: "17a / m.18: NO FERMATA" },
+    ]
+  },
+  {
     num: "20A",
     id: "19 2-20B",
     title: "The Circus McGurkus (Part 2)",
@@ -791,14 +877,6 @@ const DEFAULT_NOTES: NoteGroup[] = [
     ],
   },
   {
-    num: "24B",
-    id: "16B-17B",
-    title: "Mayzie's Exit Music / Finale (Pt 1–3)",
-    items: [
-      { tag: "repeat", text: "17b, bar 47-48: Three times as written (cast has been practising it 4 times due to error in score) (MORGAN)" }
-    ]
-  },
-  {
     num: "28",
     id: "28",
     title: "The People Versus Horton the Elephant (Part 1)",
@@ -820,20 +898,20 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v20 to force load the updated default lists
+  // Changed storage keys to v44 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v20");
+    const saved = localStorage.getItem("seussical_songs_v44");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v20");
+    const saved = localStorage.getItem("seussical_notes_v44");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "logged" | "pending">("all");
-  const [activeTab, setActiveTab] = useState<"tempos" | "notes" | "metronome" | "tap-tempo">("tempos");
+  const [activeTab, setActiveTab] = useState<"tempos" | "notes" | "metronome" | "tap-tempo" | "performance">("performance");
   
   // Metronome State
   const [metronomeBpm, setMetronomeBpm] = useState(120);
@@ -867,17 +945,86 @@ const Index = () => {
   const [newNoteTag, setNewNoteTag] = useState<NoteItem["tag"]>("general");
   const [newNoteText, setNewNoteText] = useState("");
 
+  // Performance Mode State
+  const [performanceIndex, setPerformanceIndex] = useState(0);
+
   // Audio Context Ref
   const audioCtxRef = useRef<AudioContext | null>(null);
-  const intervalRef = useRef<number | null>(null);
+  const prevPlayingRef = useRef(false);
+
+  // Performance Entries (flattened)
+  interface PerformanceEntry {
+    songNum: string | number;
+    songId: string;
+    songTitle: string;
+    sectionLabel: string;
+    bpm: number | null;
+    feel?: string;
+    notes: NoteItem[];
+  }
+
+  const performanceEntries = useMemo<PerformanceEntry[]>(() => {
+    const entries: PerformanceEntry[] = [];
+    for (const song of songs) {
+      const matchedNotes = notes.find((n) => n.id === song.id && String(n.num) === String(song.num));
+      if (song.sections && song.sections.length > 0) {
+        for (const sec of song.sections) {
+          entries.push({
+            songNum: song.num,
+            songId: song.id,
+            songTitle: song.title,
+            sectionLabel: sec.label,
+            bpm: sec.bpm,
+            feel: song.feel,
+            notes: matchedNotes?.items || [],
+          });
+        }
+      } else if (song.bpm && song.bpm.length > 0) {
+        if (song.bpm.length === 1) {
+          entries.push({
+            songNum: song.num,
+            songId: song.id,
+            songTitle: song.title,
+            sectionLabel: "♩",
+            bpm: song.bpm[0],
+            feel: song.feel,
+            notes: matchedNotes?.items || [],
+          });
+        } else {
+          song.bpm.forEach((b, i) => {
+            entries.push({
+              songNum: song.num,
+              songId: song.id,
+              songTitle: song.title,
+              sectionLabel: `T${i + 1}`,
+              bpm: b,
+              feel: song.feel,
+              notes: matchedNotes?.items || [],
+            });
+          });
+        }
+      } else {
+        entries.push({
+          songNum: song.num,
+          songId: song.id,
+          songTitle: song.title,
+          sectionLabel: "",
+          bpm: null,
+          feel: song.feel,
+          notes: matchedNotes?.items || [],
+        });
+      }
+    }
+    return entries;
+  }, [songs, notes]);
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v20", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v44", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v20", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v44", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -891,47 +1038,64 @@ const Index = () => {
       if (ctx.state === "suspended") {
         ctx.resume();
       }
+
+      const now = ctx.currentTime;
+
       const osc = ctx.createOscillator();
       const gain = ctx.createGain();
+      osc.type = "sine";
+      osc.frequency.setValueAtTime(880, now);
+      gain.gain.setValueAtTime(0.6, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
       osc.connect(gain);
       gain.connect(ctx.destination);
-
-      osc.type = "sine";
-      osc.frequency.setValueAtTime(1000, ctx.currentTime); // 1000Hz click
-      gain.gain.setValueAtTime(0.4, ctx.currentTime);
-      gain.gain.exponentialRampToValueAtTime(0.001, ctx.currentTime + 0.04); // short click
-
-      osc.start(ctx.currentTime);
-      osc.stop(ctx.currentTime + 0.05);
+      osc.start(now);
+      osc.stop(now + 0.1);
     } catch (e) {
       console.error("Failed to play metronome click:", e);
     }
   };
 
-  useEffect(() => {
-    if (isMetronomePlaying) {
-      const intervalMs = (60 / metronomeBpm) * 1000;
-      playClick();
-      setFlash(true);
-      const flashTimeout = setTimeout(() => setFlash(false), 80);
+  const metronomeBpmRef = useRef(metronomeBpm);
+  metronomeBpmRef.current = metronomeBpm;
 
-      const interval = window.setInterval(() => {
+  useEffect(() => {
+    const justStarted = isMetronomePlaying && !prevPlayingRef.current;
+    prevPlayingRef.current = isMetronomePlaying;
+
+    if (isMetronomePlaying) {
+      if (justStarted) {
         playClick();
         setFlash(true);
         setTimeout(() => setFlash(false), 80);
-      }, intervalMs);
+      }
 
-      intervalRef.current = interval;
+      const tick = () => {
+        playClick();
+        setFlash(true);
+        setTimeout(() => setFlash(false), 80);
+      };
+
+      let nextTickTime = performance.now() + (60 / metronomeBpmRef.current) * 1000;
+      let animId: number;
+
+      const schedule = () => {
+        const now = performance.now();
+        if (now >= nextTickTime) {
+          tick();
+          nextTickTime = now + (60 / metronomeBpmRef.current) * 1000;
+        }
+        animId = requestAnimationFrame(schedule);
+      };
+      animId = requestAnimationFrame(schedule);
+
       return () => {
-        clearInterval(interval);
-        clearTimeout(flashTimeout);
+        cancelAnimationFrame(animId);
       };
     } else {
-      if (intervalRef.current) {
-        clearInterval(intervalRef.current);
-      }
+      setFlash(false);
     }
-  }, [isMetronomePlaying, metronomeBpm, isMuted]);
+  }, [isMetronomePlaying, isMuted]);
 
   // ── TAP TEMPO ENGINE ──
   const handleTap = () => {
@@ -967,6 +1131,45 @@ const Index = () => {
     window.addEventListener("keydown", handleKeyDown);
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, [activeTab, tapTimes]);
+
+  useEffect(() => {
+    if (activeTab !== "performance") return;
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.code === "Escape") {
+        e.preventDefault();
+        setIsMetronomePlaying(false);
+        setActiveTab("tempos");
+      } else if (e.code === "ArrowUp" || e.code === "ArrowLeft") {
+        e.preventDefault();
+        setPerformanceIndex((prev) => Math.max(0, prev - 1));
+      } else if (e.code === "ArrowDown" || e.code === "ArrowRight") {
+        e.preventDefault();
+        setPerformanceIndex((prev) => Math.min(performanceEntries.length - 1, prev + 1));
+      } else if (e.code === "Space") {
+        e.preventDefault();
+        const currentEntry = performanceEntries[performanceIndex];
+        if (currentEntry?.bpm) {
+          if (isMetronomePlaying) {
+            setIsMetronomePlaying(false);
+          } else {
+            setMetronomeBpm(currentEntry.bpm);
+            setIsMetronomePlaying(true);
+          }
+        }
+      }
+    };
+    window.addEventListener("keydown", handleKeyDown);
+    return () => window.removeEventListener("keydown", handleKeyDown);
+  }, [activeTab, performanceIndex, performanceEntries.length, isMetronomePlaying]);
+
+  useEffect(() => {
+    if (isMetronomePlaying && activeTab === "performance") {
+      const currentEntry = performanceEntries[performanceIndex];
+      if (currentEntry?.bpm) {
+        setMetronomeBpm(currentEntry.bpm);
+      }
+    }
+  }, [performanceIndex]);
 
   // ── HELPERS ──
   const isLogged = (s: Song) => {
@@ -1184,8 +1387,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v20");
-      localStorage.removeItem("seussical_notes_v20");
+      localStorage.removeItem("seussical_songs_v44");
+      localStorage.removeItem("seussical_notes_v44");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
@@ -1341,15 +1544,156 @@ const Index = () => {
 
   return (
     <div className="min-h-screen bg-[#0e0e12] text-[#e8e8f0] font-sans relative overflow-x-hidden selection:bg-[#e8c547] selection:text-[#0e0e12]">
-      {/* Noise Overlay */}
-      <div 
-        className="fixed inset-0 pointer-events-none z-0 opacity-40"
-        style={{
-          backgroundImage: `url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E")`
-        }}
-      />
+      {activeTab === "performance" ? (
+        (() => {
+          const entry = performanceEntries[performanceIndex] || performanceEntries[0];
+          if (!entry) return null;
+          const totalEntries = performanceEntries.length;
+          const currentIndex = Math.max(0, Math.min(performanceIndex, totalEntries - 1));
+          const currentEntry = performanceEntries[currentIndex];
 
-      <div className="max-w-[1020px] mx-auto px-4 py-12 md:px-8 relative z-10">
+          const goUp = () => {
+            setPerformanceIndex(Math.max(0, currentIndex - 1));
+          };
+          const goDown = () => {
+            setPerformanceIndex(Math.min(totalEntries - 1, currentIndex + 1));
+          };
+          const togglePlay = () => {
+            if (isMetronomePlaying) {
+              setIsMetronomePlaying(false);
+            } else {
+              if (currentEntry.bpm) {
+                setMetronomeBpm(currentEntry.bpm);
+                setIsMetronomePlaying(true);
+              }
+            }
+          };
+
+          const tagColors: Record<string, { bg: string; text: string; border: string }> = {
+            repeat: { bg: "rgba(126,184,247,0.1)", text: "#7eb8f7", border: "rgba(126,184,247,0.3)" },
+            cut: { bg: "rgba(240,122,90,0.1)", text: "#f07a5a", border: "rgba(240,122,90,0.3)" },
+            timing: { bg: "rgba(232,197,71,0.1)", text: "#e8c547", border: "rgba(232,197,71,0.3)" },
+            dynamics: { bg: "rgba(94,203,138,0.1)", text: "#5ecb8a", border: "rgba(94,203,138,0.3)" },
+            general: { bg: "rgba(122,122,148,0.1)", text: "#7a7a94", border: "rgba(122,122,148,0.3)" },
+          };
+
+          return (
+            <div className="fixed inset-0 bg-[#0e0e12] z-50 flex flex-col landscape:flex-row select-none">
+              <button
+                onClick={() => { setIsMetronomePlaying(false); setActiveTab("tempos"); }}
+                className="absolute top-3 right-3 z-10 w-10 h-10 flex items-center justify-center rounded-full bg-[#16161c] border border-[#2a2a38] text-[#7a7a94] hover:text-[#e8e8f0] hover:bg-[#1e1e27] active:scale-95 transition-all"
+              >
+                <X className="w-5 h-5" />
+              </button>
+              <button
+                onClick={goUp}
+                disabled={currentIndex === 0}
+                className="flex-1 landscape:flex-none landscape:w-24 flex items-center justify-center bg-[#0e0e12] hover:bg-[#1a1a24] active:bg-[#22222e] transition-colors disabled:opacity-20 disabled:cursor-not-allowed border-r-0 landscape:border-r border-[#2a2a38]"
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <ChevronUp className="w-12 h-12 text-[#7a7a94]" />
+                  <span className="font-mono text-[10px] text-[#7a7a94] uppercase tracking-widest">Up</span>
+                </div>
+              </button>
+
+              <div className="flex-1 flex flex-col items-center justify-center px-4 py-4 landscape:py-6 gap-2 landscape:gap-3 min-h-0 overflow-hidden">
+                <h2 className="font-serif text-lg landscape:text-xl font-bold text-[#e8e8f0] text-center leading-tight whitespace-nowrap truncate max-w-full">
+                  {currentEntry.songNum} · {currentEntry.songTitle}
+                </h2>
+
+                {currentEntry.sectionLabel && (
+                  <p className="font-mono text-sm text-[#7a7a94] tracking-wider whitespace-nowrap">
+                    {currentEntry.sectionLabel}
+                  </p>
+                )}
+
+                {currentEntry.bpm ? (
+                  <div className="text-center">
+                    <span className="font-serif text-6xl landscape:text-7xl font-black text-[#e8c547] leading-none">
+                      {currentEntry.bpm}
+                    </span>
+                    <span className="font-mono text-base text-[#7a7a94] ml-2">BPM</span>
+                  </div>
+                ) : (
+                  <span className="font-serif text-3xl text-[#2a2a38] font-black italic">Pending</span>
+                )}
+
+                {currentEntry.feel && (
+                  <p className="font-mono text-[11px] text-[#e8c547]/70 tracking-wider whitespace-nowrap">
+                    {currentEntry.feel}
+                  </p>
+                )}
+
+                {currentEntry.notes.length > 0 && (
+                  <div className="flex flex-wrap gap-1.5 max-w-lg justify-center mt-1">
+                    {currentEntry.notes.map((note, idx) => {
+                      const colors = tagColors[note.tag] || tagColors.general;
+                      return (
+                        <span key={idx} className="inline-flex items-center gap-1 px-2 py-1 rounded-full text-[11px] leading-none whitespace-nowrap" style={{ backgroundColor: colors.bg, color: colors.text, border: `1px solid ${colors.border}` }}>
+                          <span className="font-mono font-bold uppercase tracking-wider text-[9px]">{note.tag}</span>
+                          <span>
+                            {note.text.split("(MORGAN)").map((part, i) => (
+                              <React.Fragment key={i}>
+                                {i > 0 && (
+                                  <span className="inline-flex items-center px-1 py-0 rounded-full text-[9px] font-mono font-bold bg-[#f07a5a]/20 text-[#f07a5a] border border-[#f07a5a]/30 mx-0.5 align-middle">
+                                    M
+                                  </span>
+                                )}
+                                {part}
+                              </React.Fragment>
+                            ))}
+                          </span>
+                        </span>
+                      );
+                    })}
+                  </div>
+                )}
+
+                {currentEntry.bpm && (
+                  <button
+                    onClick={togglePlay}
+                    className={`mt-1 w-16 h-16 landscape:w-20 landscape:h-20 rounded-full flex items-center justify-center transition-all ${
+                      isMetronomePlaying && metronomeBpm === currentEntry.bpm
+                        ? "bg-[#e8c547] text-[#0e0e12] hover:bg-[#d4b33b] active:scale-95"
+                        : "bg-[#16161c] border-2 border-[#e8c547] text-[#e8c547] hover:bg-[#e8c547]/10 active:scale-95"
+                    }`}
+                  >
+                    {isMetronomePlaying && metronomeBpm === currentEntry.bpm ? (
+                      <Pause className="w-7 h-7" />
+                    ) : (
+                      <Play className="w-7 h-7 ml-0.5" />
+                    )}
+                  </button>
+                )}
+
+                {currentIndex < totalEntries - 1 && (() => {
+                  const next = performanceEntries[currentIndex + 1];
+                  return (
+                    <div className="flex items-center gap-2 mt-1 px-3 py-1.5 rounded-lg bg-[#16161c] border border-[#2a2a38]">
+                      <span className="font-mono text-[10px] font-bold uppercase tracking-widest text-[#7a7a94]">Next</span>
+                      <span className="font-mono text-[11px] text-[#e8e8f0] whitespace-nowrap">
+                        {next.songNum} · {next.songTitle}{next.sectionLabel ? ` · ${next.sectionLabel}` : ""}{next.bpm ? ` · ${next.bpm}` : " · Pending"}
+                      </span>
+                    </div>
+                  );
+                })()}
+              </div>
+
+              <button
+                onClick={goDown}
+                disabled={currentIndex === totalEntries - 1}
+                className="flex-1 landscape:flex-none landscape:w-24 flex items-center justify-center bg-[#0e0e12] hover:bg-[#1a1a24] active:bg-[#22222e] transition-colors disabled:opacity-20 disabled:cursor-not-allowed border-t landscape:border-t-0 border-l-0 landscape:border-l border-[#2a2a38]"
+              >
+                <div className="flex flex-col items-center gap-2">
+                  <ChevronDown className="w-12 h-12 text-[#7a7a94]" />
+                  <span className="font-mono text-[10px] text-[#7a7a94] uppercase tracking-widest">Down</span>
+                </div>
+              </button>
+            </div>
+          );
+        })()
+      ) : (
+      <>
         {/* ── HEADER ── */}
         <header className="mb-10 border-b border-[#2a2a38] pb-8 flex flex-col md:flex-row md:items-end md:justify-between gap-6">
           <div>
@@ -1465,6 +1809,17 @@ const Index = () => {
           >
             <Sparkles className="w-3.5 h-3.5 inline mr-1.5" />
             Tap Tempo
+          </button>
+          <button
+            onClick={() => setActiveTab("performance")}
+            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all ${
+              activeTab === "performance"
+                ? "text-[#e8c547] border-[#e8c547]"
+                : "text-[#7a7a94] border-transparent hover:text-[#e8e8f0]"
+            }`}
+          >
+            <Zap className="w-3.5 h-3.5 inline mr-1.5" />
+            Performance
           </button>
         </div>
 
@@ -2019,7 +2374,16 @@ const Index = () => {
                             {item.tag}
                           </Badge>
                           <span className="text-sm text-[#e8e8f0] leading-relaxed">
-                            {item.text}
+                            {item.text.split("(MORGAN)").map((part, i) => (
+                              <React.Fragment key={i}>
+                                {i > 0 && (
+                                  <span className="inline-flex items-center px-1.5 py-0.5 rounded-full text-[10px] font-mono font-bold bg-[#f07a5a]/20 text-[#f07a5a] border border-[#f07a5a]/30 mx-0.5 align-middle">
+                                    MORGAN
+                                  </span>
+                                )}
+                                {part}
+                              </React.Fragment>
+                            ))}
                           </span>
                         </div>
 
@@ -2193,9 +2557,9 @@ const Index = () => {
             </div>
           </div>
         )}
-      </div>
-
-      <MadeWithDyad />
+      </>
+      )}
+      {activeTab !== "performance" && <MadeWithDyad />}
     </div>
   );
 };
