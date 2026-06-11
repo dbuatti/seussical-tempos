@@ -733,12 +733,7 @@ const DEFAULT_NOTES: NoteGroup[] = [
     num: "1A",
     id: "01-01D",
     title: "Oh, The Thinks You Can Think! (Intro)",
-    items: [
-      {
-        tag: "repeat",
-        text: "Measures 17–18 are played TWO times only — not five.",
-      },
-    ],
+    items: [],
   },
   {
     num: "2",
