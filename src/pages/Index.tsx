@@ -664,13 +664,32 @@ const DEFAULT_NOTES: NoteGroup[] = [
     ],
   },
   {
-    num: "4A–4C",
-    id: "04-04c",
-    title: "Biggest Blame Fool (Parts 2–4)",
+    num: "2",
+    id: "02-03",
+    title: "Our Story Begins…",
     items: [
-      { tag: "repeat", text: "4A mm.74–75: play twice only." },
-      { tag: "cut", text: "4C m.19: remove the poco rall — no rall." },
-    ],
+      {
+        tag: "repeat",
+        text: "bar 17-19: Play twice (subject to tech)",
+      }
+    ]
+  },
+  {
+    num: "4A",
+    id: "04-04c",
+    title: "Biggest Blame Fool (Part 2)",
+    items: [
+      { tag: "general", text: "bar 9: as written" },
+      { tag: "repeat", text: "bar 74-75: likely twice, but wait for vocal cue" }
+    ]
+  },
+  {
+    num: "4D",
+    id: "04-04D",
+    title: "Biggest Blame Playoff / Gertrude McFuzz",
+    items: [
+      { tag: "general", text: "bar 1-2: as written, chorus will likely need a cue in" }
+    ]
   },
   {
     num: "5",
@@ -685,6 +704,7 @@ const DEFAULT_NOTES: NoteGroup[] = [
         tag: "timing",
         text: "5D m.13: fermata on beat 3 — vocals lead back into m.14.",
       },
+      { tag: "timing", text: "bar 97: wait for vocal cue" }
     ],
   },
   {
@@ -696,13 +716,32 @@ const DEFAULT_NOTES: NoteGroup[] = [
     ],
   },
   {
+    num: "11",
+    id: "09",
+    title: "The Military (Verse)",
+    items: [
+      { tag: "repeat", text: "9a, bar 14: Play six times (subject to tech)" },
+      { tag: "timing", text: "9b, bar 17: wait for vocal cue" },
+      { tag: "repeat", text: "9e, bar 14: as written, four times" }
+    ]
+  },
+  {
     num: "13",
     id: "10-10B",
     title: "Alone in the Universe (Pt 1–3)",
     items: [
       { tag: "timing", text: "m.14: rall." },
       { tag: "timing", text: "m.15: a tempo." },
+      { tag: "repeat", text: "10, bar 1: twice (Subject to tech)" }
     ],
+  },
+  {
+    num: "14",
+    id: "11-12",
+    title: "Gertrude McFuzz / Amayzing Mayzie (Pt 1)",
+    items: [
+      { tag: "repeat", text: "14a, bar 1-4: twice" }
+    ]
   },
   {
     num: "20A",
@@ -714,6 +753,14 @@ const DEFAULT_NOTES: NoteGroup[] = [
         text: "mm.41–44 ❓ — TBC: dictated or played straight through?",
       },
     ],
+  },
+  {
+    num: "23A",
+    id: "23-23A 1",
+    title: "Butter Battle",
+    items: [
+      { tag: "timing", text: "bar 3-4: wait for vocal cue" }
+    ]
   },
   {
     num: "23B",
@@ -728,40 +775,59 @@ const DEFAULT_NOTES: NoteGroup[] = [
   },
   {
     num: "24",
-    id: "24-24A",
+    id: "24",
     title: "Into the Who's Christmas Pageant",
     items: [
-      {
-        tag: "general",
-        text: "Bar 6 of 24/d is semi dictated but relatively in time.",
-      },
+      { tag: "repeat", text: "bar 1: as written, play twice" },
+      { tag: "general", text: "bar 15-18: as written" }
     ],
   },
   {
     num: "24A",
-    id: "24-24A",
-    title: "Into the Who's Christmas Pageant",
+    id: "24A",
+    title: "The Grinch Carved the Roast Beast",
     items: [
-      {
-        tag: "repeat",
-        text: "m.1: only repeat bar 1 TWICE.",
-      },
+      { tag: "repeat", text: "bar 1: play once" }
     ],
   },
+  {
+    num: "24B",
+    id: "16B-17B",
+    title: "Mayzie's Exit Music / Finale (Pt 1–3)",
+    items: [
+      { tag: "repeat", text: "17b, bar 47-48: Three times as written (cast has been practising it 4 times due to error in score)" }
+    ]
+  },
+  {
+    num: "28",
+    id: "28",
+    title: "The People Versus Horton the Elephant (Part 1)",
+    items: [
+      { tag: "general", text: "bar 54-55: as written" }
+    ]
+  },
+  {
+    num: "28C",
+    id: "28C",
+    title: "The People Versus Horton the Elephant (Part 4)",
+    items: [
+      { tag: "repeat", text: "bar 11-12: play 6 times" }
+    ]
+  }
 ];
 
 const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v18 to force load the updated default lists
+  // Changed storage keys to v19 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v18");
+    const saved = localStorage.getItem("seussical_songs_v19");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v18");
+    const saved = localStorage.getItem("seussical_notes_v19");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -807,11 +873,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v18", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v19", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v18", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v19", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -1118,8 +1184,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v18");
-      localStorage.removeItem("seussical_notes_v18");
+      localStorage.removeItem("seussical_songs_v19");
+      localStorage.removeItem("seussical_notes_v19");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
