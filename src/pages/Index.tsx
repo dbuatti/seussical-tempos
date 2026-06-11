@@ -1651,25 +1651,25 @@ const Index = () => {
               </button>
 
               <div className="flex-1 flex flex-col items-center justify-center px-4 py-3 landscape:py-4 gap-2 landscape:gap-[2vh] min-h-0 overflow-hidden">
-                <h2 className="font-serif text-2xl landscape:text-[6vh] font-bold text-[#e8e8f0] text-center leading-tight whitespace-nowrap truncate max-w-full">
+                <h2 className="font-serif text-3xl landscape:text-[9vh] font-black text-[#e8e8f0] text-center leading-tight whitespace-nowrap truncate max-w-full">
                   {currentEntry.songNum} · {currentEntry.songTitle}
                 </h2>
 
                 {currentEntry.sectionLabel && (
-                  <p className="font-mono text-base landscape:text-[3.5vh] text-[#7a7a94] tracking-wider whitespace-nowrap">
+                  <p className="font-mono text-lg landscape:text-[4vh] text-[#e8c547] tracking-wider whitespace-nowrap">
                     {currentEntry.sectionLabel}
                   </p>
                 )}
 
                 {currentEntry.bpm ? (
-                  <div className="text-center flex items-baseline justify-center">
-                    <span className="font-serif text-7xl landscape:text-[30vh] font-black text-[#e8c547] leading-none">
+                  <div className="text-center flex items-baseline justify-center opacity-80">
+                    <span className="font-serif text-5xl landscape:text-[7vh] font-bold text-[#e8c547] leading-none">
                       {currentEntry.bpm}
                     </span>
-                    <span className="font-mono text-2xl landscape:text-[4vh] text-[#7a7a94] ml-2">BPM</span>
+                    <span className="font-mono text-sm landscape:text-[2.4vh] text-[#7a7a94] ml-1.5">BPM</span>
                   </div>
                 ) : (
-                  <span className="font-serif text-4xl landscape:text-[12vh] text-[#2a2a38] font-black italic">Pending</span>
+                  <span className="font-serif text-3xl landscape:text-[6vh] text-[#2a2a38] font-black italic">Pending</span>
                 )}
 
                 {currentEntry.feel && (
@@ -1706,16 +1706,16 @@ const Index = () => {
                 {currentEntry.bpm && (
                   <button
                     onClick={togglePlay}
-                    className={`mt-1 w-16 h-16 landscape:w-[11vh] landscape:h-[11vh] rounded-full flex items-center justify-center transition-all ${
+                    className={`mt-2 w-24 h-24 landscape:w-[18vh] landscape:h-[18vh] rounded-full flex items-center justify-center transition-all shadow-lg shadow-[#e8c547]/10 ${
                       isMetronomePlaying && metronomeBpm === currentEntry.bpm
                         ? "bg-[#e8c547] text-[#0e0e12] hover:bg-[#d4b33b] active:scale-95"
-                        : "bg-[#16161c] border-2 border-[#e8c547] text-[#e8c547] hover:bg-[#e8c547]/10 active:scale-95"
+                        : "bg-[#16161c] border-[3px] border-[#e8c547] text-[#e8c547] hover:bg-[#e8c547]/10 active:scale-95"
                     }`}
                   >
                     {isMetronomePlaying && metronomeBpm === currentEntry.bpm ? (
-                      <Pause className="w-7 h-7 landscape:w-[5vh] landscape:h-[5vh]" />
+                      <Pause className="w-10 h-10 landscape:w-[8vh] landscape:h-[8vh]" />
                     ) : (
-                      <Play className="w-7 h-7 ml-0.5 landscape:w-[5vh] landscape:h-[5vh]" />
+                      <Play className="w-10 h-10 ml-1 landscape:w-[8vh] landscape:h-[8vh]" />
                     )}
                   </button>
                 )}
