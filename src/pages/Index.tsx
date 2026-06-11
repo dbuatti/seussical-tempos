@@ -1437,6 +1437,20 @@ const Index = () => {
   };
 
   // ── RENDER BPM CELL ──
+  // Jump straight into Performance mode at a specific song + metronome mark
+  const startPerformanceAt = (song: Song, sectionLabel: string) => {
+    const idx = performanceEntries.findIndex(
+      (e) =>
+        String(e.songId) === String(song.id) &&
+        String(e.songNum) === String(song.num) &&
+        e.sectionLabel === sectionLabel
+    );
+    if (idx < 0) return;
+    setIsMetronomePlaying(false);
+    setPerformanceIndex(idx);
+    setActiveTab("performance");
+  };
+
   const renderBpmCell = (s: Song) => {
     if (s.sections) {
       const vals = s.sections.map((x) => x.bpm);
@@ -1451,9 +1465,17 @@ const Index = () => {
               const pct = ((sec.bpm - mn) / range) * 60 + 30;
               return (
                 <div key={idx} className="flex items-center gap-2 group/sec">
-                  <span className="font-mono text-[10px] text-[#7a7a94] w-16 shrink-0 tracking-wider">
+                  <button
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      startPerformanceAt(s, sec.label);
+                    }}
+                    title={`Start performance from ${sec.label}`}
+                    className="font-mono text-[10px] text-[#7a7a94] w-16 shrink-0 tracking-wider text-left flex items-center gap-1 hover:text-[#e8c547] transition-colors cursor-pointer group/lbl"
+                  >
+                    <Play className="w-2.5 h-2.5 shrink-0 fill-current opacity-40 md:opacity-0 md:group-hover/lbl:opacity-100 transition-opacity" />
                     {sec.label}
-                  </span>
+                  </button>
                   <div className="flex-1 h-1 bg-[#2a2a38] rounded overflow-hidden max-w-[80px]">
                     <div
                       className="h-full rounded bg-[#e8c547] transition-all duration-300"
@@ -1489,50 +1511,75 @@ const Index = () => {
     if (s.bpm.length === 1) {
       const bpmVal = s.bpm[0];
       return (
-        <button
-          onClick={(e) => {
-            e.stopPropagation();
-            setMetronomeBpm(bpmVal);
-            setIsMetronomePlaying(true);
-            toast({
-              title: "Metronome Set",
-              description: `Playing ${bpmVal} BPM`,
-            });
-          }}
-          className="font-serif text-2xl font-bold text-[#e8c547] hover:underline cursor-pointer"
-        >
-          {bpmVal}
-        </button>
+        <div className="flex items-center gap-2 group/lbl">
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              startPerformanceAt(s, "♩");
+            }}
+            title="Start performance here"
+            className="text-[#7a7a94] hover:text-[#e8c547] transition-colors cursor-pointer shrink-0"
+          >
+            <Play className="w-3 h-3 fill-current opacity-40 md:opacity-0 md:group-hover/lbl:opacity-100 transition-opacity" />
+          </button>
+          <button
+            onClick={(e) => {
+              e.stopPropagation();
+              setMetronomeBpm(bpmVal);
+              setIsMetronomePlaying(true);
+              toast({
+                title: "Metronome Set",
+                description: `Playing ${bpmVal} BPM`,
+              });
+            }}
+            className="font-serif text-2xl font-bold text-[#e8c547] hover:underline cursor-pointer"
+          >
+            {bpmVal}
+          </button>
+        </div>
       );
     }
 
     // Sequential multi-tempo
     return (
       <div className="flex flex-wrap gap-1 items-center">
-        {s.bpm.map((b, i) => (
-          <React.Fragment key={i}>
-            {i > 0 && <span className="text-[#2a2a38] text-xs">›</span>}
-            <button
-              onClick={(e) => {
-                e.stopPropagation();
-                setMetronomeBpm(b);
-                setIsMetronomePlaying(true);
-                toast({
-                  title: "Metronome Set",
-                  description: `Playing T\${i + 1} (\${b} BPM)`,
-                });
-              }}
-              className="font-mono text-[11px] font-medium px-2 py-0.5 rounded-full border border-opacity-30 bg-opacity-10 hover:bg-opacity-20 transition-all cursor-pointer"
-              style={{
-                color: ["#e8c547", "#7eb8f7", "#f07a5a", "#5ecb8a", "#c084fc"][i % 5],
-                borderColor: ["#e8c547", "#7eb8f7", "#f07a5a", "#5ecb8a", "#c084fc"][i % 5],
-                backgroundColor: ["#e8c547", "#7eb8f7", "#f07a5a", "#5ecb8a", "#c084fc"][i % 5] + "11",
-              }}
-            >
-              T{i + 1} {b}
-            </button>
-          </React.Fragment>
-        ))}
+        {s.bpm.map((b, i) => {
+          const color = ["#e8c547", "#7eb8f7", "#f07a5a", "#5ecb8a", "#c084fc"][i % 5];
+          return (
+            <React.Fragment key={i}>
+              {i > 0 && <span className="text-[#2a2a38] text-xs">›</span>}
+              <span
+                className="inline-flex items-center gap-1 rounded-full border border-opacity-30 bg-opacity-10 px-2 py-0.5 group/lbl"
+                style={{ color, borderColor: color, backgroundColor: color + "11" }}
+              >
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    startPerformanceAt(s, `T${i + 1}`);
+                  }}
+                  title={`Start performance from T${i + 1}`}
+                  className="cursor-pointer shrink-0 hover:opacity-100"
+                >
+                  <Play className="w-2.5 h-2.5 fill-current opacity-40 md:opacity-0 md:group-hover/lbl:opacity-100 transition-opacity" />
+                </button>
+                <button
+                  onClick={(e) => {
+                    e.stopPropagation();
+                    setMetronomeBpm(b);
+                    setIsMetronomePlaying(true);
+                    toast({
+                      title: "Metronome Set",
+                      description: `Playing T${i + 1} (${b} BPM)`,
+                    });
+                  }}
+                  className="font-mono text-[11px] font-medium hover:underline cursor-pointer"
+                >
+                  T{i + 1} {b}
+                </button>
+              </span>
+            </React.Fragment>
+          );
+        })}
       </div>
     );
   };
@@ -1760,10 +1807,10 @@ const Index = () => {
         </div>
 
         {/* ── TABS ── */}
-        <div className="flex gap-1 border-b border-[#2a2a38] mb-8 print:hidden">
+        <div className="flex gap-1 border-b border-[#2a2a38] mb-8 print:hidden overflow-x-auto [scrollbar-width:none] [&::-webkit-scrollbar]:hidden -mx-1 px-1">
           <button
             onClick={() => setActiveTab("tempos")}
-            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all ${
+            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all shrink-0 whitespace-nowrap ${
               activeTab === "tempos"
                 ? "text-[#e8c547] border-[#e8c547]"
                 : "text-[#7a7a94] border-transparent hover:text-[#e8e8f0]"
@@ -1774,7 +1821,7 @@ const Index = () => {
           </button>
           <button
             onClick={() => setActiveTab("notes")}
-            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all ${
+            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all shrink-0 whitespace-nowrap ${
               activeTab === "notes"
                 ? "text-[#e8c547] border-[#e8c547]"
                 : "text-[#7a7a94] border-transparent hover:text-[#e8e8f0]"
@@ -1785,7 +1832,7 @@ const Index = () => {
           </button>
           <button
             onClick={() => setActiveTab("metronome")}
-            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all ${
+            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all shrink-0 whitespace-nowrap ${
               activeTab === "metronome"
                 ? "text-[#e8c547] border-[#e8c547]"
                 : "text-[#7a7a94] border-transparent hover:text-[#e8e8f0]"
@@ -1796,7 +1843,7 @@ const Index = () => {
           </button>
           <button
             onClick={() => setActiveTab("tap-tempo")}
-            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all ${
+            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all shrink-0 whitespace-nowrap ${
               activeTab === "tap-tempo"
                 ? "text-[#e8c547] border-[#e8c547]"
                 : "text-[#7a7a94] border-transparent hover:text-[#e8e8f0]"
@@ -1807,8 +1854,9 @@ const Index = () => {
           </button>
           <button
             onClick={() => setActiveTab("performance")}
-            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all ${
-              activeTab as string === "performance"
+            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all shrink-0 whitespace-nowrap ${
+              activeTab === "performance"
+                ? "text-[#e8c547] border-[#e8c547]"
                 : "text-[#7a7a94] border-transparent hover:text-[#e8e8f0]"
             }`}
           >
@@ -2078,7 +2126,7 @@ const Index = () => {
             {/* Table Wrap */}
             <div className="border border-[#2a2a38] rounded-xl overflow-hidden bg-[#16161c]">
               <div className="overflow-x-auto">
-                <table className="w-full border-collapse text-left">
+                <table className="w-full min-w-[640px] border-collapse text-left">
                   <thead>
                     <tr className="bg-[#1e1e27] border-b-2 border-[#2a2a38]">
                       <th className="font-mono text-[10px] tracking-widest uppercase text-[#7a7a94] p-4 w-16 text-center">
@@ -2141,7 +2189,7 @@ const Index = () => {
                               {s.feel || ""}
                             </td>
                             <td className="p-4 text-right print:hidden">
-                              <div className="flex items-center justify-end gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
+                              <div className="flex items-center justify-end gap-1 opacity-100 md:opacity-0 md:group-hover:opacity-100 transition-opacity">
                                 <Button
                                   variant="ghost"
                                   size="icon"
@@ -2457,7 +2505,7 @@ const Index = () => {
                     onClick={() => setMetronomeBpm(Math.max(40, Math.min(250, metronomeBpm + val)))}
                     className="bg-[#0e0e12] border-[#2a2a38] text-[#7a7a94] hover:text-[#e8e8f0] hover:bg-[#1e1e27] font-mono text-xs px-2.5 h-8"
                   >
-                    {val > 0 ? `+\${val}` : val}
+                    {val > 0 ? `+${val}` : val}
                   </Button>
                 ))}
               </div>
@@ -2539,7 +2587,7 @@ const Index = () => {
                       setActiveTab("metronome");
                       toast({
                         title: "Tempo Applied",
-                        description: `Set metronome to \${tapBpm} BPM`,
+                        description: `Set metronome to ${tapBpm} BPM`,
                       });
                     }}
                     className="bg-[#7eb8f7] text-[#0e0e12] hover:bg-[#6aa4e3] font-mono text-xs"
