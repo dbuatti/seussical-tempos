@@ -581,31 +581,61 @@ const DEFAULT_SONGS: Song[] = [
     num: 28,
     id: "28",
     title: "The People Versus Horton the Elephant (Part 1)",
+    sections: [
+      { label: "m.13", bpm: 200 }
+    ]
   },
   {
     num: "28A",
     id: "28A",
     title: "The People Versus Horton the Elephant (Part 2)",
+    sections: [
+      { label: "28a.4", bpm: 200 },
+      { label: "28a.22", bpm: 165 },
+      { label: "28a.40", bpm: 175 }
+    ]
   },
   {
     num: "28B",
     id: "28B",
     title: "The People Versus Horton the Elephant (Part 3)",
+    sections: [
+      { label: "28b.30", bpm: 160 },
+      { label: "28b.35", bpm: 135 },
+      { label: "28b.43", bpm: 115 },
+      { label: "28b.57", bpm: 177 },
+      { label: "28b.61", bpm: 168 },
+      { label: "28b.67", bpm: 178 },
+      { label: "28b.79", bpm: 177 }
+    ]
   },
   {
     num: "28C",
     id: "28C",
     title: "The People Versus Horton the Elephant (Part 4)",
+    sections: [
+      { label: "28c.1", bpm: 261 }
+    ]
   },
   {
     num: "28D",
     id: "28D",
     title: "Yopp!/Alone in the Universe (Reprise)",
+    sections: [
+      { label: "28d.1", bpm: 96 },
+      { label: "28d.19", bpm: 210 },
+      { label: "28d.45", bpm: 215 },
+      { label: "28d.56", bpm: 109 }
+    ]
   },
   {
     num: 29,
     id: "29",
     title: "Oh, The Thinks You Can Think! (Finale Act 2)",
+    sections: [
+      { label: "29.1", bpm: 99 },
+      { label: "29.14", bpm: 145 }
+    ]
   },
   {
     num: 30,
@@ -722,14 +752,14 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v14 to force load the updated default lists
+  // Changed storage keys to v16 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v14");
+    const saved = localStorage.getItem("seussical_songs_v16");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v14");
+    const saved = localStorage.getItem("seussical_notes_v16");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -775,11 +805,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v14", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v16", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v14", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v16", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -1086,8 +1116,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v14");
-      localStorage.removeItem("seussical_notes_v14");
+      localStorage.removeItem("seussical_songs_v16");
+      localStorage.removeItem("seussical_notes_v16");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
