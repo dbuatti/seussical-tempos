@@ -647,6 +647,7 @@ const DEFAULT_SONGS: Song[] = [
     num: 31,
     id: "31",
     title: "Exit Music",
+    bpm: [147],
   },
 ];
 
@@ -753,14 +754,14 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v17 to force load the updated default lists
+  // Changed storage keys to v18 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v17");
+    const saved = localStorage.getItem("seussical_songs_v18");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v17");
+    const saved = localStorage.getItem("seussical_notes_v18");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -806,11 +807,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v17", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v18", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v17", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v18", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -1117,8 +1118,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v17");
-      localStorage.removeItem("seussical_notes_v17");
+      localStorage.removeItem("seussical_songs_v18");
+      localStorage.removeItem("seussical_notes_v18");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
