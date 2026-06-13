@@ -250,6 +250,20 @@ const DEFAULT_SONGS: Song[] = [
   },
   {
     num: 11,
+    id: "09",
+    title: "The Military (Verse)",
+    sections: [
+      { label: "m.1", bpm: 151 },
+      { label: "9a m.4", bpm: 86 },
+      { label: "9a m.8", bpm: 99 },
+      { label: "9a m.13", bpm: 120 },
+      { label: "9b m.1", bpm: 122 },
+      { label: "9d m.1", bpm: 125 },
+      { label: "9e m.1", bpm: 122 },
+    ],
+  },
+  {
+    num: 11,
     id: "11",
     title: "Gertrude McFuzz",
     sections: [
@@ -893,14 +907,14 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v45 to force load the updated default lists
+  // Changed storage keys to v46 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v45");
+    const saved = localStorage.getItem("seussical_songs_v46");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v45");
+    const saved = localStorage.getItem("seussical_notes_v46");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -1015,11 +1029,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v45", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v46", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v45", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v46", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -1382,8 +1396,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v45");
-      localStorage.removeItem("seussical_notes_v45");
+      localStorage.removeItem("seussical_songs_v46");
+      localStorage.removeItem("seussical_notes_v46");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
@@ -2365,7 +2379,7 @@ const Index = () => {
             <div className="space-y-6">
               {notes.map((group, groupIdx) => (
                 <div
-                  key={`${group.num}-\${groupIdx}`}
+                  key={`${group.num}-${groupIdx}`}
                   className="bg-[#16161c] border border-[#2a2a38] rounded-xl overflow-hidden"
                 >
                   <div className="flex items-center justify-between px-5 py-4 border-b border-[#2a2a38] bg-[#1e1e27]">
@@ -2463,7 +2477,7 @@ const Index = () => {
           <div className="max-w-md mx-auto bg-[#16161c] border border-[#2a2a38] rounded-2xl p-8 text-center relative overflow-hidden">
             {/* Visual Flash Ring */}
             <div
-              className={`absolute inset-0 border-2 rounded-2xl pointer-events-none transition-all duration-75 \${
+              className={`absolute inset-0 border-2 rounded-2xl pointer-events-none transition-all duration-75 ${
                 flash ? "border-[#e8c547] opacity-100 scale-[0.99]" : "border-transparent opacity-0 scale-100"
               }`}
             />
@@ -2473,7 +2487,7 @@ const Index = () => {
             {/* BPM Display */}
             <div className="mb-8 relative inline-block">
               <div
-                className={`w-32 h-32 rounded-full mx-auto flex flex-col items-center justify-center border-4 transition-all duration-75 \${
+                className={`w-32 h-32 rounded-full mx-auto flex flex-col items-center justify-center border-4 transition-all duration-75 ${
                   flash
                     ? "border-[#e8c547] bg-[#e8c547]/10 scale-105"
                     : "border-[#2a2a38] bg-[#0e0e12]"
@@ -2528,7 +2542,7 @@ const Index = () => {
                   variant="outline"
                   size="icon"
                   onClick={() => setIsMuted(!isMuted)}
-                  className={`w-12 h-12 rounded-full border-[#2a2a38] \${
+                  className={`w-12 h-12 rounded-full border-[#2a2a38] ${
                     isMuted ? "text-red-400 bg-red-950/10" : "text-[#7a7a94] hover:text-[#e8e8f0]"
                   }`}
                 >
@@ -2537,7 +2551,7 @@ const Index = () => {
 
                 <Button
                   onClick={() => setIsMetronomePlaying(!isMetronomePlaying)}
-                  className={`w-16 h-16 rounded-full flex items-center justify-center transition-all \${
+                  className={`w-16 h-16 rounded-full flex items-center justify-center transition-all ${
                     isMetronomePlaying
                       ? "bg-red-500 hover:bg-red-600 text-white"
                       : "bg-[#e8c547] hover:bg-[#d4b33b] text-[#0e0e12]"
@@ -2579,7 +2593,7 @@ const Index = () => {
             <div className="space-y-4">
               <p className="text-xs text-[#7a7a94] font-mono">
                 {tapTimes.length > 0
-                  ? `Registered \${tapTimes.length} taps. Keep tapping to refine.`
+                  ? `Registered ${tapTimes.length} taps. Keep tapping to refine.`
                   : "No taps registered yet."}
               </p>
 
