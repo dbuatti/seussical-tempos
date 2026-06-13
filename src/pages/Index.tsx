@@ -317,6 +317,16 @@ const DEFAULT_SONGS: Song[] = [
     feel: "♩.=119 (half of 238 minim)",
   },
   {
+    num: 16,
+    id: "12A 2",
+    title: "Amayzing Gertrude (Pt 1) — Part 2",
+  },
+  {
+    num: 17,
+    id: "12B 1",
+    title: "Amayzing Gertrude (Pt 2)",
+  },
+  {
     num: 18,
     id: "12B 2-13",
     title: "Amayzing Gertrude Pt 2 / Monkey Around",
@@ -345,13 +355,18 @@ const DEFAULT_SONGS: Song[] = [
   {
     num: 21,
     id: "16 1",
-    title: "Notice Me, Horton",
+    title: "Notice Me, Horton — Part 1",
     sections: [
       { label: "m.1", bpm: 182 },
       { label: "m.20", bpm: 89 },
       { label: "m.28", bpm: 115 },
       { label: "m.85", bpm: 135 },
     ],
+  },
+  {
+    num: 22,
+    id: "16-2",
+    title: "Notice Me, Horton — Part 2",
   },
   {
     num: 23,
@@ -907,14 +922,14 @@ const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v46 to force load the updated default lists
+  // Changed storage keys to v47 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v46");
+    const saved = localStorage.getItem("seussical_songs_v47");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v46");
+    const saved = localStorage.getItem("seussical_notes_v47");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
   });
 
@@ -1029,11 +1044,11 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v46", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v47", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v46", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v47", JSON.stringify(notes));
   }, [notes]);
 
   // ── METRONOME ENGINE ──
@@ -1396,8 +1411,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v46");
-      localStorage.removeItem("seussical_notes_v46");
+      localStorage.removeItem("seussical_songs_v47");
+      localStorage.removeItem("seussical_notes_v47");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
