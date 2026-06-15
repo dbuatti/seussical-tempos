@@ -936,6 +936,7 @@ const DEFAULT_NOTES: NoteGroup[] = [
     items: [
       { tag: "general", text: "bar 54-55: as written (MORGAN)" },
       { tag: "general", text: "Need to go over all tempos (DANIELE)" },
+      { tag: "general", text: "m.54: investigate 2x repeat (DANIELE)" },
     ]
   },
   {
