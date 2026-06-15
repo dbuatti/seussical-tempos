@@ -922,6 +922,14 @@ const DEFAULT_NOTES: NoteGroup[] = [
     ],
   },
   {
+    num: "27C",
+    id: "27C",
+    title: "The Whos Return",
+    items: [
+      { tag: "general", text: "Direct segue into 28" },
+    ],
+  },
+  {
     num: "28",
     id: "28",
     title: "The People Versus Horton the Elephant (Part 1)",
