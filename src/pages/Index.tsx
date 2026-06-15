@@ -911,6 +911,17 @@ const DEFAULT_NOTES: NoteGroup[] = [
     ],
   },
   {
+    num: "24D",
+    id: "24D",
+    title: "A Re-enactment",
+    items: [
+      { tag: "general", text: "Bar 6 is CUT — move from Bar 5 to Bar 7" },
+      { tag: "timing", text: "Bar 7: on cue" },
+      { tag: "general", text: "Go over transition between 24D to 25" },
+      { tag: "general", text: "Rehearse tempo of 24D bar 9" },
+    ],
+  },
+  {
     num: "28",
     id: "28",
     title: "The People Versus Horton the Elephant (Part 1)",
