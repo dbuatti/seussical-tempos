@@ -907,7 +907,7 @@ const DEFAULT_NOTES: NoteGroup[] = [
     id: "24A",
     title: "The Grinch Carved the Roast Beast",
     items: [
-      { tag: "repeat", text: "bar 1: play once (MORGAN)" }
+      { tag: "repeat", text: "M1 ONLY once — no repeat" }
     ],
   },
   {
