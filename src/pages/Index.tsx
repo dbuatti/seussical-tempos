@@ -854,6 +854,14 @@ const DEFAULT_NOTES: NoteGroup[] = [
     ]
   },
   {
+    num: "19",
+    id: "19 1",
+    title: "Egg, Nest & Tree",
+    items: [
+      { tag: "repeat", text: "M1–m4: repeat twice" }
+    ]
+  },
+  {
     num: "20A",
     id: "19 2-20B",
     title: "The Circus McGurkus (Part 2)",
