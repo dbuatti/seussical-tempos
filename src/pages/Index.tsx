@@ -934,7 +934,24 @@ const DEFAULT_NOTES: NoteGroup[] = [
     id: "28",
     title: "The People Versus Horton the Elephant (Part 1)",
     items: [
-      { tag: "general", text: "bar 54-55: as written (MORGAN)" }
+      { tag: "general", text: "bar 54-55: as written (MORGAN)" },
+      { tag: "general", text: "Need to go over all tempos (DANIELE)" },
+    ]
+  },
+  {
+    num: "28A",
+    id: "28A",
+    title: "The People Versus Horton the Elephant (Part 2)",
+    items: [
+      { tag: "general", text: "Need to go over all tempos (DANIELE)" },
+    ]
+  },
+  {
+    num: "28B",
+    id: "28B",
+    title: "The People Versus Horton the Elephant (Part 3)",
+    items: [
+      { tag: "general", text: "Need to go over all tempos (DANIELE)" },
     ]
   },
   {
@@ -942,7 +959,8 @@ const DEFAULT_NOTES: NoteGroup[] = [
     id: "28C",
     title: "The People Versus Horton the Elephant (Part 4)",
     items: [
-      { tag: "repeat", text: "bar 11-12: play 6 times (MORGAN)" }
+      { tag: "repeat", text: "bar 11-12: play 6 times (MORGAN)" },
+      { tag: "general", text: "Need to go over all tempos (DANIELE)" },
     ]
   }
 ];
