@@ -885,10 +885,11 @@ const DEFAULT_NOTES: NoteGroup[] = [
     id: "23A 2-23B",
     title: "Saving Private JoJo",
     items: [
-      {
-        tag: "timing",
-        text: "m.7: no pause on beat two. Straight through/on stick.",
-      },
+      { tag: "timing", text: "m.7: no pause on beat two. Straight through/on stick." },
+      { tag: "cut", text: "Cut bars 6–7" },
+      { tag: "timing", text: "Fermata on m.5" },
+      { tag: "timing", text: "m.8: on cue" },
+      { tag: "timing", text: "m.10: on cue" },
     ],
   },
   {
@@ -897,7 +898,8 @@ const DEFAULT_NOTES: NoteGroup[] = [
     title: "Into the Who's Christmas Pageant",
     items: [
       { tag: "repeat", text: "bar 1: as written, play twice (MORGAN)" },
-      { tag: "general", text: "bar 15-18: as written (MORGAN)" }
+      { tag: "general", text: "bar 15-18: as written (MORGAN)" },
+      { tag: "timing", text: "M1 is a safety / vamp" },
     ],
   },
   {
