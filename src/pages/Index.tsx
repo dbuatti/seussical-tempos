@@ -786,6 +786,14 @@ const DEFAULT_NOTES: NoteGroup[] = [
     ]
   },
   {
+    num: "4B",
+    id: "04-04c",
+    title: "Biggest Blame Fool (Part 3)",
+    items: [
+      { tag: "general", text: "4B bar 43 → 4C bar 1: practise transition (DANIELE)" }
+    ]
+  },
+  {
     num: "4D",
     id: "04-04D",
     title: "Biggest Blame Playoff / Gertrude McFuzz",
