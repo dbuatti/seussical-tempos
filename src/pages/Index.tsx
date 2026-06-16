@@ -772,7 +772,8 @@ const DEFAULT_NOTES: NoteGroup[] = [
       {
         tag: "repeat",
         text: "bar 17-19: Play twice (subject to tech) (MORGAN)",
-      }
+      },
+      { tag: "general", text: "m.98 → m.99: practise transition (DANIELE)" },
     ]
   },
   {
