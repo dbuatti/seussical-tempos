@@ -832,7 +832,8 @@ const DEFAULT_NOTES: NoteGroup[] = [
     items: [
       { tag: "repeat", text: "9a, bar 14: Play six times (subject to tech) (MORGAN)" },
       { tag: "timing", text: "9b, bar 17: wait for vocal cue (MORGAN)" },
-      { tag: "repeat", text: "9e, bar 14: as written, four times (MORGAN)" }
+      { tag: "repeat", text: "9e, bar 14: as written, four times (MORGAN)" },
+      { tag: "general", text: "9a, bar 12 → bar 13: practise tempo transition (DANIELE)" }
     ]
   },
   {
