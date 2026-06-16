@@ -99,3 +99,81 @@
     @apply bg-background text-foreground;
   }
 }
+
+@media print {
+  body {
+    background: white !important;
+    color: black !important;
+    -webkit-print-color-adjust: exact;
+    print-color-adjust: exact;
+  }
+
+  .print-hide {
+    display: none !important;
+  }
+
+  /* Hide everything except the notes content when printing */
+  body > div > div > div:not(.print-notes-target) {
+    display: none !important;
+  }
+
+  .print-notes-target {
+    display: block !important;
+    max-width: 100% !important;
+    padding: 0 !important;
+    margin: 0 !important;
+  }
+
+  .print-notes-target .bg-\[\#16161c\],
+  .print-notes-target .bg-\[\#1a1a24\] {
+    background: white !important;
+    border: 1px solid #ccc !important;
+  }
+
+  .print-notes-target .text-\[\#e8e8f0\],
+  .print-notes-target .text-\[\#e8c547\],
+  .print-notes-target .text-\[\#7eb8f7\],
+  .print-notes-target .text-\[\#7a7a94\] {
+    color: black !important;
+  }
+
+  .print-notes-target .border-\[\#2a2a38\] {
+    border-color: #ccc !important;
+  }
+
+  .print-notes-target .bg-\[\#7eb8f7\]\/10,
+  .print-notes-target .bg-\[\#7eb8f7\]\/20,
+  .print-notes-target .bg-\[\#e8c547\]\/10,
+  .print-notes-target .bg-\[\#e8c547\]\/20,
+  .print-notes-target .bg-\[\#f07a5a\]\/10,
+  .print-notes-target .bg-\[\#f07a5a\]\/20,
+  .print-notes-target .bg-\[\#5ecb8a\]\/10,
+  .print-notes-target .bg-\[\#5ecb8a\]\/20,
+  .print-notes-target .bg-\[\#7a7a94\]\/10 {
+    background: transparent !important;
+  }
+
+  .print-notes-target .rounded-xl,
+  .print-notes-target .rounded-lg,
+  .print-notes-target .rounded-full {
+    border-radius: 4px !important;
+  }
+
+  .print-notes-target h2 {
+    font-size: 18pt !important;
+    margin-bottom: 12pt !important;
+  }
+
+  .print-notes-target ul {
+    page-break-inside: avoid;
+  }
+
+  .print-notes-target li {
+    page-break-inside: avoid;
+  }
+
+  @page {
+    margin: 1.5cm;
+    size: A4;
+  }
+}

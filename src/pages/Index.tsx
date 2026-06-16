@@ -21,7 +21,10 @@ import {
   Save,
   Zap,
   ChevronUp,
-  ChevronDown
+  ChevronDown,
+  Mic,
+  User,
+  CheckSquare
 } from "lucide-react";
 import { MadeWithDyad } from "@/components/made-with-dyad";
 import { Button } from "@/components/ui/button";
@@ -55,6 +58,12 @@ interface NoteGroup {
   id: string;
   title: string;
   items: NoteItem[];
+}
+
+interface KBCheckItem {
+  num: string | number;
+  title: string;
+  checked: boolean;
 }
 
 // ── DEFAULT DATA ──
@@ -104,11 +113,24 @@ const DEFAULT_SONGS: Song[] = [
     title: "Our Story Begins…",
     sections: [
       { label: "m.1", bpm: 175 },
+    ],
+  },
+  {
+    num: 3,
+    id: "02-03",
+    title: "Horton Hears a Who!",
+    sections: [
       { label: "m.63", bpm: 179 },
       { label: "m.86", bpm: 138 },
       { label: "m.93", bpm: 104 },
       { label: "m.99", bpm: 172 },
     ],
+  },
+  {
+    num: 4,
+    id: "04-04c",
+    title: "Biggest Blame Fool",
+    sections: [],
   },
   {
     num: "4A",
@@ -240,7 +262,7 @@ const DEFAULT_SONGS: Song[] = [
     sections: [{ label: "m.20", bpm: 109 }],
   },
   {
-    num: 10,
+    num: 8,
     id: "08",
     title: "How to Raise a Child",
     sections: [
@@ -249,7 +271,7 @@ const DEFAULT_SONGS: Song[] = [
     ],
   },
   {
-    num: 11,
+    num: 9,
     id: "09",
     title: "The Military (Verse)",
     sections: [
@@ -263,9 +285,75 @@ const DEFAULT_SONGS: Song[] = [
     ],
   },
   {
+    num: "9A",
+    id: "09",
+    title: "The Military (Genghis' Verse)",
+    sections: [
+      { label: "9a m.4", bpm: 86 },
+      { label: "9a m.8", bpm: 99 },
+      { label: "9a m.13", bpm: 120 },
+    ],
+  },
+  {
+    num: "9B",
+    id: "09",
+    title: "The Military (Part 1)",
+    sections: [
+      { label: "9b m.1", bpm: 122 },
+    ],
+  },
+  {
+    num: "9C",
+    id: "09",
+    title: "The Military (Part 2)",
+    sections: [],
+  },
+  {
+    num: "9D",
+    id: "09",
+    title: "The Military (Part 3)",
+    sections: [
+      { label: "9d m.1", bpm: 125 },
+    ],
+  },
+  {
+    num: "9E",
+    id: "09",
+    title: "The Military (Playoff)",
+    sections: [
+      { label: "9e m.1", bpm: 122 },
+    ],
+  },
+  {
+    num: 10,
+    id: "10-10B",
+    title: "Alone in the Universe (Part 1)",
+    sections: [
+      { label: "10 m.1", bpm: 123 },
+      { label: "10 m.9", bpm: 114 },
+    ],
+  },
+  {
+    num: "10A",
+    id: "10-10B",
+    title: "Alone in the Universe (Part 2)",
+    sections: [
+      { label: "10a m.1", bpm: 137 },
+    ],
+  },
+  {
+    num: "10B",
+    id: "10-10B",
+    title: "Alone in the Universe (Part 3)",
+    sections: [
+      { label: "10b m.13", bpm: 126 },
+      { label: "10b m.19", bpm: 125 },
+    ],
+  },
+  {
     num: 11,
     id: "11",
-    title: "Gertrude McFuzz",
+    title: "The One Feather Tail of Miss Gertrude McFuzz",
     sections: [
       { label: "m.1", bpm: 174 },
       { label: "m.12", bpm: 174 },
@@ -276,76 +364,67 @@ const DEFAULT_SONGS: Song[] = [
   {
     num: 12,
     id: "12",
-    title: "Amayzing Mayzie (Pt 1)",
+    title: "Amayzing Mayzie (Part 1)",
     sections: [
       { label: "m.1", bpm: 201 },
       { label: "m.85", bpm: 205 },
     ],
   },
   {
-    num: 13,
-    id: "10-10B",
-    title: "Alone in the Universe (Pt 1–3)",
-    sections: [
-      { label: "10 m.1", bpm: 123 },
-      { label: "10 m.9", bpm: 114 },
-      { label: "10a m.1", bpm: 137 },
-      { label: "10b m.13", bpm: 126 },
-      { label: "10b m.19", bpm: 125 },
-    ],
-  },
-  {
-    num: 14,
-    id: "11-12",
-    title: "Gertrude McFuzz / Amayzing Mayzie (Pt 1)",
-    sections: [
-      { label: "11 m.1", bpm: 174 },
-      { label: "11 m.12", bpm: 174 },
-      { label: "11 m.33", bpm: 156 },
-      { label: "11 m.54", bpm: 204 },
-      { label: "12 m.1", bpm: 201 },
-      { label: "12 m.85", bpm: 205 },
-    ],
-  },
-  {
-    num: 15,
-    id: "12A 1",
-    title: "Amayzing Gertrude (Pt 1) — Part 1",
+    num: "12A",
+    id: "12A",
+    title: "Amayzing Gertrude (Part 1)",
     sections: [
       { label: "12a m.1", bpm: 119 },
     ],
     feel: "♩.=119 (half of 238 minim)",
   },
   {
-    num: 16,
-    id: "12A 2",
-    title: "Amayzing Gertrude (Pt 1) — Part 2",
-  },
-  {
-    num: 17,
-    id: "12B 1",
-    title: "Amayzing Gertrude (Pt 2)",
-  },
-  {
-    num: 18,
-    id: "12B 2-13",
-    title: "Amayzing Gertrude Pt 2 / Monkey Around",
+    num: "12B",
+    id: "12B",
+    title: "Amayzing Gertrude (Part 2)",
     sections: [
       { label: "12b m.52", bpm: 122 },
+    ],
+  },
+  {
+    num: 13,
+    id: "13",
+    title: "Monkey Around",
+    sections: [
       { label: "13 m.1", bpm: 122 },
     ],
   },
   {
-    num: 19,
+    num: 14,
     id: "14-14C",
-    title: "Chasing the Whos (Pt 1–4)",
+    title: "Chasing the Whos (Part 1)",
     sections: [
       { label: "m.1", bpm: 212 },
+    ],
+  },
+  {
+    num: "14A",
+    id: "14-14C",
+    title: "Chasing the Whos (Part 2)",
+    sections: [],
+  },
+  {
+    num: "14B",
+    id: "14-14C",
+    title: "Chasing the Whos (Part 3)",
+    sections: [],
+  },
+  {
+    num: "14C",
+    id: "14-14C",
+    title: "Chasing the Whos (Part 4)",
+    sections: [
       { label: "14c m.16", bpm: 155 },
     ],
   },
   {
-    num: 20,
+    num: 15,
     id: "15",
     title: "How Lucky You Are",
     sections: [
@@ -353,9 +432,9 @@ const DEFAULT_SONGS: Song[] = [
     ],
   },
   {
-    num: 21,
+    num: 16,
     id: "16 1",
-    title: "Notice Me, Horton — Part 1",
+    title: "Notice Me, Horton",
     sections: [
       { label: "m.1", bpm: 182 },
       { label: "m.20", bpm: 89 },
@@ -364,12 +443,7 @@ const DEFAULT_SONGS: Song[] = [
     ],
   },
   {
-    num: 22,
-    id: "16-2",
-    title: "Notice Me, Horton — Part 2",
-  },
-  {
-    num: 23,
+    num: "16A",
     id: "16A",
     title: "How Lucky You Are (Reprise)",
     sections: [
@@ -378,22 +452,43 @@ const DEFAULT_SONGS: Song[] = [
     feel: "♩ = 94",
   },
   {
-    num: 24,
-    id: "16B-17B",
-    title: "Mayzie's Exit Music / Finale (Pt 1–3)",
+    num: "16B",
+    id: "16B",
+    title: "Mayzie's Exit Music",
     sections: [
       { label: "16b m.1", bpm: 202 },
+    ],
+  },
+  {
+    num: 17,
+    id: "17",
+    title: "Finale (Part 1: Horton Sits on the Egg)",
+    sections: [
       { label: "17 m.1", bpm: 186 },
       { label: "17 m.29", bpm: 182 },
+    ],
+  },
+  {
+    num: "17A",
+    id: "17A",
+    title: "Finale (Part 2: Horton's Dilemma / The Hunters)",
+    sections: [
       { label: "17a m.5", bpm: 186 },
       { label: "17a m.19", bpm: 186 },
       { label: "17a m.30", bpm: 196 },
       { label: "17a m.50", bpm: 152 },
+    ],
+  },
+  {
+    num: "17B",
+    id: "17B",
+    title: "Finale (Part 3: How Lucky You Are: Reprise)",
+    sections: [
       { label: "17b m.3", bpm: 142 },
     ],
   },
   {
-    num: 25,
+    num: 18,
     id: "18",
     title: "Entr'acte",
     bpm: [159],
@@ -402,7 +497,7 @@ const DEFAULT_SONGS: Song[] = [
   {
     num: "18A",
     id: "18A-18B",
-    title: "Our Story Resumes… (Part 1)",
+    title: "Our Story Resumes... (Part 1)",
     sections: [
       { label: "T1", bpm: 185 },
       { label: "T2", bpm: 163 },
@@ -412,7 +507,7 @@ const DEFAULT_SONGS: Song[] = [
   {
     num: "18B",
     id: "18A-18B",
-    title: "Our Story Resumes… (Part 2)",
+    title: "Our Story Resumes... (Part 2)",
     sections: [
       { label: "T4", bpm: 164 },
       { label: "T5", bpm: 125 },
@@ -773,7 +868,6 @@ const DEFAULT_NOTES: NoteGroup[] = [
         tag: "repeat",
         text: "bar 17-19: Play twice (subject to tech) (MORGAN)",
       },
-      { tag: "general", text: "m.98 → m.99: practise transition (DANIELE)" },
     ]
   },
   {
@@ -789,9 +883,7 @@ const DEFAULT_NOTES: NoteGroup[] = [
     num: "4B",
     id: "04-04c",
     title: "Biggest Blame Fool (Part 3)",
-    items: [
-      { tag: "general", text: "4B bar 43 → 4C bar 1: practise transition (DANIELE)" }
-    ]
+    items: []
   },
   {
     num: "4D",
@@ -818,7 +910,7 @@ const DEFAULT_NOTES: NoteGroup[] = [
     ],
   },
   {
-    num: "10",
+    num: "8",
     id: "08",
     title: "How to Raise a Child",
     items: [
@@ -826,33 +918,24 @@ const DEFAULT_NOTES: NoteGroup[] = [
     ],
   },
   {
-    num: "11",
+    num: "9",
     id: "09",
     title: "The Military (Verse)",
     items: [
       { tag: "repeat", text: "9a, bar 14: Play six times (subject to tech) (MORGAN)" },
       { tag: "timing", text: "9b, bar 17: wait for vocal cue (MORGAN)" },
-      { tag: "repeat", text: "9e, bar 14: as written, four times (MORGAN)" },
-      { tag: "general", text: "9a, bar 12 → bar 13: practise tempo transition (DANIELE)" }
+      { tag: "repeat", text: "9e, bar 14: as written, four times (MORGAN)" }
     ]
   },
   {
-    num: "13",
+    num: "10",
     id: "10-10B",
-    title: "Alone in the Universe (Pt 1–3)",
+    title: "Alone in the Universe (Part 1–3)",
     items: [
       { tag: "timing", text: "m.14: rall." },
       { tag: "timing", text: "m.15: a tempo." },
       { tag: "repeat", text: "10, bar 1: twice (Subject to tech) (MORGAN)" }
     ],
-  },
-  {
-    num: "14",
-    id: "11-12",
-    title: "Gertrude McFuzz / Amayzing Mayzie (Pt 1)",
-    items: [
-      { tag: "repeat", text: "14a, bar 1-4: twice (MORGAN)" }
-    ]
   },
   {
     num: "16b-17b",
@@ -945,25 +1028,19 @@ const DEFAULT_NOTES: NoteGroup[] = [
     title: "The People Versus Horton the Elephant (Part 1)",
     items: [
       { tag: "general", text: "bar 54-55: as written (MORGAN)" },
-      { tag: "general", text: "Need to go over all tempos (DANIELE)" },
-      { tag: "general", text: "m.54: investigate 2x repeat (DANIELE)" },
     ]
   },
   {
     num: "28A",
     id: "28A",
     title: "The People Versus Horton the Elephant (Part 2)",
-    items: [
-      { tag: "general", text: "Need to go over all tempos (DANIELE)" },
-    ]
+    items: []
   },
   {
     num: "28B",
     id: "28B",
     title: "The People Versus Horton the Elephant (Part 3)",
-    items: [
-      { tag: "general", text: "Need to go over all tempos (DANIELE)" },
-    ]
+    items: []
   },
   {
     num: "28C",
@@ -971,29 +1048,228 @@ const DEFAULT_NOTES: NoteGroup[] = [
     title: "The People Versus Horton the Elephant (Part 4)",
     items: [
       { tag: "repeat", text: "bar 11-12: play 6 times (MORGAN)" },
-      { tag: "general", text: "Need to go over all tempos (DANIELE)" },
     ]
   }
+];
+
+const DEFAULT_BAND_REHEARSAL_NOTES: NoteGroup[] = [
+  {
+    num: "11",
+    id: "11",
+    title: "The One Feather Tail of Miss Gertrude McFuzz",
+    items: [
+      { tag: "general", text: "The one feather tail of Miss Gertrude McFuzz" },
+    ],
+  },
+  {
+    num: "12",
+    id: "12",
+    title: "Amayzing Mayzie (Part 1)",
+    items: [
+      { tag: "general", text: "Amayzing Mayzie — transitioning from song 11 bar 54" },
+    ],
+  },
+];
+
+const DEFAULT_DANIELE_NOTES: NoteGroup[] = [
+  {
+    num: "2",
+    id: "02-03",
+    title: "Our Story Begins…",
+    items: [
+      { tag: "general", text: "m.98 → m.99: practise transition" },
+    ],
+  },
+  {
+    num: "4B",
+    id: "04-04c",
+    title: "Biggest Blame Fool (Part 3)",
+    items: [
+      { tag: "general", text: "4B bar 43 → 4C bar 1: practise transition" },
+    ],
+  },
+  {
+    num: "9",
+    id: "09",
+    title: "The Military (Verse)",
+    items: [
+      { tag: "general", text: "9a, bar 12 → bar 13: practise tempo transition" },
+    ],
+  },
+  {
+    num: "16B",
+    id: "16B",
+    title: "Mayzie's Exit Music",
+    items: [
+      { tag: "general", text: "16B → Song 17: practise transition" },
+    ],
+  },
+  {
+    num: "17A",
+    id: "17A",
+    title: "Finale (Part 2: Horton's Dilemma / The Hunters)",
+    items: [
+      { tag: "general", text: "17a m.30/34: go over tempo, rehearse it" },
+      { tag: "general", text: "17a bar 19: get comfortable bringing in" },
+    ],
+  },
+  {
+    num: "28",
+    id: "28",
+    title: "The People Versus Horton the Elephant (Part 1)",
+    items: [
+      { tag: "general", text: "Need to go over all tempos" },
+      { tag: "general", text: "m.54: investigate 2x repeat" },
+    ],
+  },
+  {
+    num: "28A",
+    id: "28A",
+    title: "The People Versus Horton the Elephant (Part 2)",
+    items: [
+      { tag: "general", text: "Need to go over all tempos" },
+    ],
+  },
+  {
+    num: "28B",
+    id: "28B",
+    title: "The People Versus Horton the Elephant (Part 3)",
+    items: [
+      { tag: "general", text: "Need to go over all tempos" },
+    ],
+  },
+  {
+    num: "28C",
+    id: "28C",
+    title: "The People Versus Horton the Elephant (Part 4)",
+    items: [
+      { tag: "general", text: "Need to go over all tempos" },
+    ],
+  },
+];
+
+const DEFAULT_KB_CHECK: KBCheckItem[] = [
+  { num: 1, title: "Oh, the Thinks You Can Think! (Intro)", checked: true },
+  { num: "1A", title: "Oh, the Thinks You Can Think! (Part 1)", checked: true },
+  { num: "1B", title: "Oh, the Thinks You Can Think! (Part 2)", checked: true },
+  { num: "1C", title: "Oh, the Thinks You Can Think! (Part 3)", checked: false },
+  { num: "1D", title: "Oh, the Thinks You Can Think! (Part 4)", checked: false },
+  { num: 2, title: "Our Story Begins…", checked: false },
+  { num: 3, title: "Horton Hears a Who!", checked: false },
+  { num: 4, title: "Biggest Blame Fool", checked: false },
+  { num: "4A", title: "Biggest Blame Fool (Part 2)", checked: false },
+  { num: "4B", title: "Biggest Blame Fool (Part 3)", checked: false },
+  { num: "4C", title: "Biggest Blame Fool (Part 4)", checked: false },
+  { num: "4D", title: "Biggest Blame Playoff / Gertrude McFuzz", checked: false },
+  { num: 5, title: "Here on Who (Part 1)", checked: false },
+  { num: "5A", title: "Here on Who (Part 2: Dance)", checked: false },
+  { num: "5B", title: "Here on Who (Part 3: The War)", checked: false },
+  { num: "5C", title: "Here on Who (Part 4: The Lorax)", checked: false },
+  { num: "5D", title: "Here on Who (Part 5)", checked: false },
+  { num: "5E", title: "Meet JoJo the Who", checked: false },
+  { num: 6, title: "Oh, the Thinks You Can Think! (Reprise)", checked: false },
+  { num: 7, title: "It's Possible (Part 1)", checked: false },
+  { num: "7A", title: "It's Possible (Part 2: Dance)", checked: false },
+  { num: "7B", title: "It's Possible (Part 3)", checked: false },
+  { num: 8, title: "How to Raise a Child", checked: false },
+  { num: 9, title: "The Military (Verse)", checked: false },
+  { num: "9A", title: "The Military (Genghis' Verse)", checked: false },
+  { num: "9B", title: "The Military (Part 1)", checked: false },
+  { num: "9C", title: "The Military (Part 2)", checked: false },
+  { num: "9D", title: "The Military (Part 3)", checked: false },
+  { num: "9E", title: "The Military (Playoff)", checked: false },
+  { num: 10, title: "Alone in the Universe (Part 1)", checked: false },
+  { num: "10A", title: "Alone in the Universe (Part 2)", checked: false },
+  { num: "10B", title: "Alone in the Universe (Part 3)", checked: false },
+  { num: 11, title: "The One Feather Tail of Miss Gertrude McFuzz", checked: false },
+  { num: 12, title: "Amayzing Mayzie (Part 1)", checked: false },
+  { num: "12A", title: "Amayzing Gertrude (Part 1)", checked: false },
+  { num: "12B", title: "Amayzing Gertrude (Part 2)", checked: false },
+  { num: 13, title: "Monkey Around", checked: false },
+  { num: 14, title: "Chasing the Whos (Part 1)", checked: false },
+  { num: "14A", title: "Chasing the Whos (Part 2)", checked: false },
+  { num: "14B", title: "Chasing the Whos (Part 3)", checked: false },
+  { num: "14C", title: "Chasing the Whos (Part 4)", checked: false },
+  { num: 15, title: "How Lucky You Are", checked: false },
+  { num: 16, title: "Notice Me, Horton", checked: false },
+  { num: "16A", title: "How Lucky You Are (Reprise)", checked: false },
+  { num: "16B", title: "Mayzie's Exit Music", checked: false },
+  { num: 17, title: "Finale (Part 1: Horton Sits on the Egg)", checked: false },
+  { num: "17A", title: "Finale (Part 2: Horton's Dilemma / The Hunters)", checked: false },
+  { num: "17B", title: "Finale (Part 3: How Lucky You Are: Reprise)", checked: false },
+  { num: 18, title: "Entr'acte", checked: false },
+  { num: "18A", title: "Our Story Resumes... (Part 1)", checked: false },
+  { num: "18B", title: "Our Story Resumes... (Part 2)", checked: false },
+  { num: 19, title: "Egg, Nest & Tree", checked: false },
+  { num: 20, title: "The Circus McGurkus (Part 1)", checked: false },
+  { num: "20A", title: "The Circus McGurkus (Part 2)", checked: false },
+  { num: "20B", title: "The Circus McGurkus (Part 3)", checked: false },
+  { num: "20C", title: "The Circus on Tour / How Lucky You Are (Rep.)", checked: false },
+  { num: 21, title: "Mayzie in Palm Beach", checked: false },
+  { num: "21A", title: "Mayzie at the Circus", checked: false },
+  { num: "21B", title: "Amayzing Horton (Part 2)", checked: false },
+  { num: "21C", title: "Alone in the Universe (Reprise)", checked: false },
+  { num: 22, title: "Solla Sollew", checked: false },
+  { num: 23, title: "Green Eggs & Ham II", checked: false },
+  { num: "23A", title: "Butter Battle", checked: false },
+  { num: "23B", title: "Saving Private JoJo", checked: false },
+  { num: 24, title: "Into the Who's Christmas Pageant", checked: false },
+  { num: "24A", title: "The Grinch Carved the Roast Beast", checked: false },
+  { num: "24B", title: "A Message from the Front / Solla Sollew (Reprise)", checked: false },
+  { num: "24C", title: "How Sad", checked: false },
+  { num: "24D", title: "A Re-enactment", checked: false },
+  { num: 25, title: "JoJo Alone in the Universe", checked: false },
+  { num: 26, title: "Havin' a Hunch", checked: false },
+  { num: "26A", title: "Havin' a Hunch (Part 2: Nightmare Ballet)", checked: false },
+  { num: "26B", title: "Havin' a Hunch (Part 3: Oh, the Thinks!)", checked: false },
+  { num: "26C", title: "Havin' a Hunch (Part 4)", checked: false },
+  { num: 27, title: "Gertrude / Espionage", checked: false },
+  { num: "27A", title: "All for You (Verse)", checked: false },
+  { num: "27B", title: "All for You", checked: false },
+  { num: "27C", title: "The Whos Return", checked: false },
+  { num: 28, title: "The People Versus Horton the Elephant (Part 1)", checked: false },
+  { num: "28A", title: "The People Versus Horton the Elephant (Part 2)", checked: false },
+  { num: "28B", title: "The People Versus Horton the Elephant (Part 3)", checked: false },
+  { num: "28C", title: "The People Versus Horton the Elephant (Part 4)", checked: false },
+  { num: "28D", title: "Yopp!/Alone in the Universe (Reprise)", checked: false },
+  { num: 29, title: "Oh, The Thinks You Can Think! (Finale Act 2)", checked: false },
+  { num: 30, title: "Green Eggs And Ham (Finale Bows: Swing)", checked: false },
+  { num: 31, title: "Exit Music", checked: false },
 ];
 
 const Index = () => {
   const { toast } = useToast();
 
   // ── STATE ──
-  // Changed storage keys to v47 to force load the updated default lists
+  // Changed storage keys to v58 to force load the updated default lists
   const [songs, setSongs] = useState<Song[]>(() => {
-    const saved = localStorage.getItem("seussical_songs_v47");
+    const saved = localStorage.getItem("seussical_songs_v58");
     return saved ? JSON.parse(saved) : DEFAULT_SONGS;
   });
 
   const [notes, setNotes] = useState<NoteGroup[]>(() => {
-    const saved = localStorage.getItem("seussical_notes_v47");
+    const saved = localStorage.getItem("seussical_notes_v58");
     return saved ? JSON.parse(saved) : DEFAULT_NOTES;
+  });
+
+  const [bandRehearsal, setBandRehearsal] = useState<NoteGroup[]>(() => {
+    const saved = localStorage.getItem("seussical_band_rehearsal_v1");
+    return saved ? JSON.parse(saved) : DEFAULT_BAND_REHEARSAL_NOTES;
+  });
+
+  const [danieleNotes, setDanieleNotes] = useState<NoteGroup[]>(() => {
+    const saved = localStorage.getItem("seussical_daniele_v1");
+    return saved ? JSON.parse(saved) : DEFAULT_DANIELE_NOTES;
+  });
+
+  const [kbCheck, setKbCheck] = useState<KBCheckItem[]>(() => {
+    const saved = localStorage.getItem("seussical_kbcheck_v1");
+    return saved ? JSON.parse(saved) : DEFAULT_KB_CHECK;
   });
 
   const [searchQuery, setSearchQuery] = useState("");
   const [filter, setFilter] = useState<"all" | "logged" | "pending">("all");
-  const [activeTab, setActiveTab] = useState<"tempos" | "notes" | "metronome" | "tap-tempo" | "performance">("performance");
+  const [activeTab, setActiveTab] = useState<"tempos" | "notes" | "band-rehearsal" | "daniele" | "kb-check" | "metronome" | "tap-tempo" | "performance">("performance");
   
   // Metronome State
   const [metronomeBpm, setMetronomeBpm] = useState(120);
@@ -1102,12 +1378,24 @@ const Index = () => {
 
   // Save to LocalStorage
   useEffect(() => {
-    localStorage.setItem("seussical_songs_v47", JSON.stringify(songs));
+    localStorage.setItem("seussical_songs_v58", JSON.stringify(songs));
   }, [songs]);
 
   useEffect(() => {
-    localStorage.setItem("seussical_notes_v47", JSON.stringify(notes));
+    localStorage.setItem("seussical_notes_v58", JSON.stringify(notes));
   }, [notes]);
+
+  useEffect(() => {
+    localStorage.setItem("seussical_band_rehearsal_v1", JSON.stringify(bandRehearsal));
+  }, [bandRehearsal]);
+
+  useEffect(() => {
+    localStorage.setItem("seussical_daniele_v1", JSON.stringify(danieleNotes));
+  }, [danieleNotes]);
+
+  useEffect(() => {
+    localStorage.setItem("seussical_kbcheck_v1", JSON.stringify(kbCheck));
+  }, [kbCheck]);
 
   // ── METRONOME ENGINE ──
   const playClick = () => {
@@ -1469,8 +1757,8 @@ const Index = () => {
     if (confirm("Are you sure you want to reset all data to Carey Grammar 2026 defaults? This will overwrite your local changes.")) {
       setSongs(DEFAULT_SONGS);
       setNotes(DEFAULT_NOTES);
-      localStorage.removeItem("seussical_songs_v47");
-      localStorage.removeItem("seussical_notes_v47");
+      localStorage.removeItem("seussical_songs_v58");
+      localStorage.removeItem("seussical_notes_v58");
       toast({
         title: "Data Reset",
         description: "Restored Carey Grammar 2026 defaults.",
@@ -1516,6 +1804,11 @@ const Index = () => {
         }
       };
     }
+  };
+
+  // ── KB CHECK HANDLER ──
+  const toggleKBCheck = (idx: number) => {
+    setKbCheck(prev => prev.map((item, i) => i === idx ? { ...item, checked: !item.checked } : item));
   };
 
   // ── PRINT HANDLER ──
@@ -1930,6 +2223,39 @@ const Index = () => {
             Notes
           </button>
           <button
+            onClick={() => setActiveTab("band-rehearsal")}
+            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all shrink-0 whitespace-nowrap ${
+              activeTab === "band-rehearsal"
+                ? "text-[#e8c547] border-[#e8c547]"
+                : "text-[#7a7a94] border-transparent hover:text-[#e8e8f0]"
+            }`}
+          >
+            <Mic className="w-3.5 h-3.5 inline mr-1.5" />
+            Band Rehearsal
+          </button>
+          <button
+            onClick={() => setActiveTab("daniele")}
+            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all shrink-0 whitespace-nowrap ${
+              activeTab === "daniele"
+                ? "text-[#e8c547] border-[#e8c547]"
+                : "text-[#7a7a94] border-transparent hover:text-[#e8e8f0]"
+            }`}
+          >
+            <User className="w-3.5 h-3.5 inline mr-1.5" />
+            Daniele
+          </button>
+          <button
+            onClick={() => setActiveTab("kb-check")}
+            className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all shrink-0 whitespace-nowrap ${
+              activeTab === "kb-check"
+                ? "text-[#e8c547] border-[#e8c547]"
+                : "text-[#7a7a94] border-transparent hover:text-[#e8e8f0]"
+            }`}
+          >
+            <CheckSquare className="w-3.5 h-3.5 inline mr-1.5" />
+            KB Check
+          </button>
+          <button
             onClick={() => setActiveTab("metronome")}
             className={`font-mono text-xs tracking-wider uppercase px-4 py-3 border-b-2 transition-all shrink-0 whitespace-nowrap ${
               activeTab === "metronome"
@@ -2231,9 +2557,6 @@ const Index = () => {
                       <th className="font-mono text-[10px] tracking-widest uppercase text-[#7a7a94] p-4 w-16 text-center">
                         #
                       </th>
-                      <th className="font-mono text-[10px] tracking-widest uppercase text-[#7a7a94] p-4 w-28">
-                        Track
-                      </th>
                       <th className="font-mono text-[10px] tracking-widest uppercase text-[#7a7a94] p-4">
                         Song Title
                       </th>
@@ -2251,7 +2574,7 @@ const Index = () => {
                   <tbody className="divide-y divide-[#2a2a38]">
                     {filteredSongs.length === 0 ? (
                       <tr>
-                        <td colSpan={6} className="p-8 text-center text-[#7a7a94] font-mono text-sm">
+                        <td colSpan={5} className="p-8 text-center text-[#7a7a94] font-mono text-sm">
                           No songs found matching your search or filter.
                         </td>
                       </tr>
@@ -2272,11 +2595,6 @@ const Index = () => {
                                 />
                                 {s.num}
                               </div>
-                            </td>
-                            <td className="p-4">
-                              <span className="font-mono text-xs text-[#7eb8f7] bg-[#7eb8f7]/10 px-2 py-0.5 rounded">
-                                {s.id}
-                              </span>
                             </td>
                             <td className="p-4 font-medium text-[#e8e8f0]">
                               {s.title}
@@ -2353,13 +2671,23 @@ const Index = () => {
           <div className="max-w-2xl">
             <div className="flex justify-between items-center mb-6 print:hidden">
               <h2 className="font-serif text-xl font-bold text-[#e8e8f0]">Performance Notes</h2>
-              <Button
-                onClick={() => setIsAddingNote(true)}
-                className="bg-[#7eb8f7] text-[#0e0e12] hover:bg-[#6aa4e3] rounded-lg text-xs font-mono uppercase tracking-wider h-9"
-              >
-                <Plus className="w-3.5 h-3.5 mr-1" />
-                Add Note
-              </Button>
+              <div className="flex gap-2">
+                <Button
+                  onClick={handlePrint}
+                  variant="outline"
+                  className="border-[#7a7a94] text-[#7a7a94] hover:text-[#e8e8f0] hover:border-[#e8e8f0] rounded-lg text-xs font-mono uppercase tracking-wider h-9"
+                >
+                  <Printer className="w-3.5 h-3.5 mr-1" />
+                  Print
+                </Button>
+                <Button
+                  onClick={() => setIsAddingNote(true)}
+                  className="bg-[#7eb8f7] text-[#0e0e12] hover:bg-[#6aa4e3] rounded-lg text-xs font-mono uppercase tracking-wider h-9"
+                >
+                  <Plus className="w-3.5 h-3.5 mr-1" />
+                  Add Note
+                </Button>
+              </div>
             </div>
 
             {/* Add Note Form */}
@@ -2449,7 +2777,8 @@ const Index = () => {
             )}
 
             {/* Notes List */}
-            <div className="space-y-6">
+            <div className="space-y-6 print-notes-target">
+              <h2 className="hidden print:block font-sans text-2xl font-bold text-black mb-4">Seussical — Performance Notes</h2>
               {notes.map((group, groupIdx) => (
                 <div
                   key={`${group.num}-${groupIdx}`}
@@ -2540,6 +2869,138 @@ const Index = () => {
                     ))}
                   </ul>
                 </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── TAB CONTENT: BAND REHEARSAL ── */}
+        {activeTab === "band-rehearsal" && (
+          <div className="max-w-2xl">
+            <div className="flex justify-between items-center mb-6 print:hidden">
+              <h2 className="font-serif text-xl font-bold text-[#e8e8f0]">Band Rehearsal Notes</h2>
+            </div>
+
+            <div className="space-y-6">
+              {bandRehearsal.map((group, groupIdx) => (
+                <div key={`${group.num}-${groupIdx}`} className="bg-[#16161c] border border-[#2a2a38] rounded-xl overflow-hidden">
+                  <div className="flex items-center gap-3 px-5 py-4 border-b border-[#2a2a38] bg-[#1a1a24]">
+                    <span className="text-2xl font-bold text-[#e8c547] font-mono">{group.num}</span>
+                    <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[#7eb8f7]/20 text-[#7eb8f7] border border-[#7eb8f7]/30">
+                      {group.id}
+                    </span>
+                    <span className="text-sm text-[#e8e8f0]">{group.title}</span>
+                  </div>
+                  <ul className="p-5 space-y-3">
+                    {group.items.map((item, itemIdx) => (
+                      <li key={itemIdx} className="flex items-start justify-between gap-4 group/note">
+                        <div className="flex gap-3 items-start">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#e8c547] shrink-0 mt-2" />
+                          <Badge
+                            variant="outline"
+                            className="text-[10px] font-mono uppercase tracking-wider shrink-0 mt-0.5"
+                            style={{
+                              color: item.tag === "timing" ? "#7eb8f7" : item.tag === "repeat" ? "#e8c547" : item.tag === "cut" ? "#f07a5a" : item.tag === "dynamics" ? "#5ecb8a" : "#7a7a94",
+                              borderColor: item.tag === "timing" ? "#7eb8f740" : item.tag === "repeat" ? "#e8c54740" : item.tag === "cut" ? "#f07a5a40" : item.tag === "dynamics" ? "#5ecb8a40" : "#7a7a9440",
+                              backgroundColor: item.tag === "timing" ? "#7eb8f710" : item.tag === "repeat" ? "#e8c54710" : item.tag === "cut" ? "#f07a5a10" : item.tag === "dynamics" ? "#5ecb8a10" : "#7a7a9410",
+                            }}
+                          >
+                            {item.tag}
+                          </Badge>
+                          <span className="text-sm text-[#e8e8f0] leading-relaxed">{item.text}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── TAB CONTENT: DANIELE ── */}
+        {activeTab === "daniele" && (
+          <div className="max-w-2xl">
+            <div className="flex justify-between items-center mb-6 print:hidden">
+              <h2 className="font-serif text-xl font-bold text-[#e8e8f0]">Daniele Notes</h2>
+            </div>
+
+            <div className="space-y-6">
+              {danieleNotes.map((group, groupIdx) => (
+                <div key={`${group.num}-${groupIdx}`} className="bg-[#16161c] border border-[#2a2a38] rounded-xl overflow-hidden">
+                  <div className="flex items-center gap-3 px-5 py-4 border-b border-[#2a2a38] bg-[#1a1a24]">
+                    <span className="text-2xl font-bold text-[#e8c547] font-mono">{group.num}</span>
+                    <span className="text-xs font-mono px-2 py-0.5 rounded-full bg-[#7eb8f7]/20 text-[#7eb8f7] border border-[#7eb8f7]/30">
+                      {group.id}
+                    </span>
+                    <span className="text-sm text-[#e8e8f0]">{group.title}</span>
+                  </div>
+                  <ul className="p-5 space-y-3">
+                    {group.items.map((item, itemIdx) => (
+                      <li key={itemIdx} className="flex items-start justify-between gap-4 group/note">
+                        <div className="flex gap-3 items-start">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[#e8c547] shrink-0 mt-2" />
+                          <Badge
+                            variant="outline"
+                            className="text-[10px] font-mono uppercase tracking-wider shrink-0 mt-0.5"
+                            style={{
+                              color: item.tag === "timing" ? "#7eb8f7" : item.tag === "repeat" ? "#e8c547" : item.tag === "cut" ? "#f07a5a" : item.tag === "dynamics" ? "#5ecb8a" : "#7a7a94",
+                              borderColor: item.tag === "timing" ? "#7eb8f740" : item.tag === "repeat" ? "#e8c54740" : item.tag === "cut" ? "#f07a5a40" : item.tag === "dynamics" ? "#5ecb8a40" : "#7a7a9440",
+                              backgroundColor: item.tag === "timing" ? "#7eb8f710" : item.tag === "repeat" ? "#e8c54710" : item.tag === "cut" ? "#f07a5a10" : item.tag === "dynamics" ? "#5ecb8a10" : "#7a7a9410",
+                            }}
+                          >
+                            {item.tag}
+                          </Badge>
+                          <span className="text-sm text-[#e8e8f0] leading-relaxed">{item.text}</span>
+                        </div>
+                      </li>
+                    ))}
+                  </ul>
+                </div>
+              ))}
+            </div>
+          </div>
+        )}
+
+        {/* ── TAB CONTENT: KB CHECK ── */}
+        {activeTab === "kb-check" && (
+          <div className="max-w-2xl">
+            <div className="flex justify-between items-center mb-6 print:hidden">
+              <h2 className="font-serif text-xl font-bold text-[#e8e8f0]">
+                KB Check
+                <span className="text-sm font-mono text-[#7a7a94] ml-3">
+                  {kbCheck.filter(k => k.checked).length} / {kbCheck.length}
+                </span>
+              </h2>
+            </div>
+
+            <div className="space-y-1">
+              {kbCheck.map((item, idx) => (
+                <button
+                  key={`${item.num}-${idx}`}
+                  onClick={() => toggleKBCheck(idx)}
+                  className={`w-full flex items-center gap-3 px-4 py-3 rounded-lg transition-all text-left ${
+                    item.checked
+                      ? "bg-[#5ecb8a]/10 border border-[#5ecb8a]/30"
+                      : "bg-[#16161c] border border-[#2a2a38] hover:border-[#7a7a94]"
+                  }`}
+                >
+                  <span className={`w-5 h-5 rounded border-2 flex items-center justify-center shrink-0 ${
+                    item.checked
+                      ? "bg-[#5ecb8a] border-[#5ecb8a]"
+                      : "border-[#7a7a94]"
+                  }`}>
+                    {item.checked && (
+                      <Check className="w-3 h-3 text-[#0e0e12]" />
+                    )}
+                  </span>
+                  <span className="font-mono text-sm font-bold text-[#e8c547] w-10 shrink-0">
+                    {item.num}
+                  </span>
+                  <span className={`text-sm ${item.checked ? "text-[#5ecb8a]" : "text-[#e8e8f0]"}`}>
+                    {item.title}
+                  </span>
+                </button>
               ))}
             </div>
           </div>
