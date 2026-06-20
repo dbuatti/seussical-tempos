@@ -22,6 +22,8 @@ import {
   Zap,
   ChevronUp,
   ChevronDown,
+  ChevronsUp,
+  ChevronsDown,
   Mic,
   User,
   CheckSquare
@@ -1310,6 +1312,20 @@ const Index = () => {
   const audioCtxRef = useRef<AudioContext | null>(null);
   const prevPlayingRef = useRef(false);
 
+  // Recreate AudioContext when audio devices change (e.g. AirPods disconnect)
+  useEffect(() => {
+    const handleDeviceChange = () => {
+      if (audioCtxRef.current) {
+        audioCtxRef.current.close().catch(() => {});
+        audioCtxRef.current = null;
+      }
+    };
+    if (navigator.mediaDevices?.addEventListener) {
+      navigator.mediaDevices.addEventListener("devicechange", handleDeviceChange);
+      return () => navigator.mediaDevices.removeEventListener("devicechange", handleDeviceChange);
+    }
+  }, []);
+
   // Performance Entries (flattened)
   interface PerformanceEntry {
     songNum: string | number;
@@ -1401,12 +1417,15 @@ const Index = () => {
   const playClick = () => {
     if (isMuted) return;
     try {
-      if (!audioCtxRef.current) {
+      if (!audioCtxRef.current || audioCtxRef.current.state === "closed") {
         audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
       }
       const ctx = audioCtxRef.current;
       if (ctx.state === "suspended") {
         ctx.resume();
+      } else if (ctx.state === "interrupted") {
+        audioCtxRef.current.close().catch(() => {});
+        audioCtxRef.current = new (window.AudioContext || (window as any).webkitAudioContext)();
       }
 
       const now = ctx.currentTime;
@@ -1980,6 +1999,30 @@ const Index = () => {
           const goDown = () => {
             setPerformanceIndex(Math.min(totalEntries - 1, currentIndex + 1));
           };
+          const goPrevSong = () => {
+            const currentId = performanceEntries[currentIndex].songId;
+            let firstOfCurrent = currentIndex;
+            while (firstOfCurrent > 0 && performanceEntries[firstOfCurrent - 1].songId === currentId) {
+              firstOfCurrent--;
+            }
+            const target = firstOfCurrent - 1;
+            if (target < 0) return;
+            const prevId = performanceEntries[target].songId;
+            let firstOfPrev = target;
+            while (firstOfPrev > 0 && performanceEntries[firstOfPrev - 1].songId === prevId) {
+              firstOfPrev--;
+            }
+            setPerformanceIndex(firstOfPrev);
+          };
+          const goNextSong = () => {
+            const currentId = performanceEntries[currentIndex].songId;
+            for (let i = currentIndex + 1; i < totalEntries; i++) {
+              if (performanceEntries[i].songId !== currentId) {
+                setPerformanceIndex(i);
+                return;
+              }
+            }
+          };
           const togglePlay = () => {
             if (isMetronomePlaying) {
               setIsMetronomePlaying(false);
@@ -2019,16 +2062,27 @@ const Index = () => {
               >
                 <X className="w-5 h-5" />
               </button>
-              <button
-                onClick={goUp}
-                disabled={currentIndex === 0}
-                className="flex-1 landscape:flex-none landscape:w-24 flex items-center justify-center bg-[#0e0e12] hover:bg-[#1a1a24] active:bg-[#22222e] transition-colors disabled:opacity-20 disabled:cursor-not-allowed border-r-0 landscape:border-r border-[#2a2a38]"
-              >
-                <div className="flex flex-col items-center gap-2">
-                  <ChevronUp className="w-12 h-12 text-[#7a7a94]" />
-                  <span className="font-mono text-[10px] text-[#7a7a94] uppercase tracking-widest">Up</span>
-                </div>
-              </button>
+              <div className="flex flex-row landscape:flex-col flex-1 landscape:flex-none landscape:w-24 bg-[#0e0e12] border-r-0 landscape:border-r border-[#2a2a38]">
+                <button
+                  onClick={goPrevSong}
+                  className="flex-1 flex items-center justify-center hover:bg-[#1a1a24] active:bg-[#22222e] transition-colors border-r landscape:border-r-0 landscape:border-b border-[#2a2a38]"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <ChevronsUp className="w-12 h-12 text-[#e84a4a]" strokeWidth={3} />
+                    <span className="font-mono text-[10px] text-[#e84a4a] uppercase tracking-widest">Song</span>
+                  </div>
+                </button>
+                <button
+                  onClick={goUp}
+                  disabled={currentIndex === 0}
+                  className="flex-1 flex items-center justify-center hover:bg-[#1a1a24] active:bg-[#22222e] transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <ChevronUp className="w-12 h-12 text-[#7a7a94]" />
+                    <span className="font-mono text-[10px] text-[#7a7a94] uppercase tracking-widest">Up</span>
+                  </div>
+                </button>
+              </div>
 
               <div className="flex-1 flex flex-col items-center justify-center px-4 py-3 landscape:py-4 gap-2 landscape:gap-[2vh] min-h-0 overflow-hidden">
                 <h2 className="font-serif text-3xl landscape:text-[9vh] font-black text-[#e8e8f0] text-center leading-tight whitespace-nowrap truncate max-w-full">
@@ -2113,16 +2167,27 @@ const Index = () => {
                 })()}
               </div>
 
-              <button
-                onClick={goDown}
-                disabled={currentIndex === totalEntries - 1}
-                className="flex-1 landscape:flex-none landscape:w-24 flex items-center justify-center bg-[#0e0e12] hover:bg-[#1a1a24] active:bg-[#22222e] transition-colors disabled:opacity-20 disabled:cursor-not-allowed border-t landscape:border-t-0 border-l-0 landscape:border-l border-[#2a2a38]"
-              >
-                <div className="flex flex-col items-center gap-2">
-                  <ChevronDown className="w-12 h-12 text-[#7a7a94]" />
-                  <span className="font-mono text-[10px] text-[#7a7a94] uppercase tracking-widest">Down</span>
-                </div>
-              </button>
+              <div className="flex flex-row landscape:flex-col flex-1 landscape:flex-none landscape:w-24 bg-[#0e0e12] border-l-0 landscape:border-l border-t landscape:border-t-0 border-[#2a2a38]">
+                <button
+                  onClick={goNextSong}
+                  className="flex-1 flex items-center justify-center hover:bg-[#1a1a24] active:bg-[#22222e] transition-colors border-r landscape:border-r-0 landscape:border-b border-[#2a2a38]"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <ChevronsDown className="w-12 h-12 text-[#e84a4a]" strokeWidth={3} />
+                    <span className="font-mono text-[10px] text-[#e84a4a] uppercase tracking-widest">Song</span>
+                  </div>
+                </button>
+                <button
+                  onClick={goDown}
+                  disabled={currentIndex === totalEntries - 1}
+                  className="flex-1 flex items-center justify-center hover:bg-[#1a1a24] active:bg-[#22222e] transition-colors disabled:opacity-20 disabled:cursor-not-allowed"
+                >
+                  <div className="flex flex-col items-center gap-2">
+                    <ChevronDown className="w-12 h-12 text-[#7a7a94]" />
+                    <span className="font-mono text-[10px] text-[#7a7a94] uppercase tracking-widest">Down</span>
+                  </div>
+                </button>
+              </div>
             </div>
           );
         })()
