@@ -2062,7 +2062,7 @@ const Index = () => {
               >
                 <X className="w-5 h-5" />
               </button>
-              <div className="flex flex-row landscape:flex-col flex-1 landscape:flex-none landscape:w-24 bg-[#0e0e12] border-r-0 landscape:border-r border-[#2a2a38]">
+              <div className="flex flex-row landscape:flex-col flex-1 landscape:flex-none landscape:w-36 bg-[#0e0e12] border-r-0 landscape:border-r border-[#2a2a38]">
                 <button
                   onClick={goPrevSong}
                   className="flex-1 flex items-center justify-center hover:bg-[#1a1a24] active:bg-[#22222e] transition-colors border-r landscape:border-r-0 landscape:border-b border-[#2a2a38]"
@@ -2085,12 +2085,13 @@ const Index = () => {
               </div>
 
               <div className="flex-1 flex flex-col items-center justify-center px-4 py-3 landscape:py-4 gap-2 landscape:gap-[2vh] min-h-0 overflow-hidden">
+                <div className="absolute top-0 left-0 right-0 h-2 bg-[#e8c547]" />
                 <h2 className="font-serif text-3xl landscape:text-[9vh] font-black text-[#e8e8f0] text-center leading-tight whitespace-nowrap truncate max-w-full">
                   {currentEntry.songNum} · {currentEntry.songTitle}
                 </h2>
 
                 {currentEntry.sectionLabel && (
-                  <p className="font-mono text-lg landscape:text-[4vh] text-[#e8c547] tracking-wider whitespace-nowrap">
+                  <p className="font-mono text-2xl landscape:text-[5.5vh] font-bold text-[#e8c547] tracking-wider whitespace-nowrap">
                     {currentEntry.sectionLabel}
                   </p>
                 )}
@@ -2157,9 +2158,9 @@ const Index = () => {
                 {currentIndex < totalEntries - 1 && (() => {
                   const next = performanceEntries[currentIndex + 1];
                   return (
-                    <div className="flex items-center gap-2 mt-1 px-3 py-1.5 landscape:px-4 landscape:py-2 rounded-lg bg-[#16161c] border border-[#2a2a38]">
-                      <span className="font-mono text-[10px] landscape:text-[1.8vh] font-bold uppercase tracking-widest text-[#7a7a94]">Next</span>
-                      <span className="font-mono text-[11px] landscape:text-[2vh] text-[#e8e8f0] whitespace-nowrap">
+                    <div className="flex items-center gap-2 mt-1 px-4 py-2 landscape:px-5 landscape:py-2.5 rounded-lg bg-[#16161c] border border-[#2a2a38]">
+                      <span className="font-mono text-sm landscape:text-[2.4vh] font-bold uppercase tracking-widest text-[#7a7a94]">Next</span>
+                      <span className="font-mono text-sm landscape:text-[2.4vh] text-[#e8e8f0] whitespace-nowrap">
                         {next.songNum} · {next.songTitle}{next.sectionLabel ? ` · ${next.sectionLabel}` : ""}{next.bpm ? ` · ${next.bpm}` : " · Pending"}
                       </span>
                     </div>
@@ -2167,7 +2168,7 @@ const Index = () => {
                 })()}
               </div>
 
-              <div className="flex flex-row landscape:flex-col flex-1 landscape:flex-none landscape:w-24 bg-[#0e0e12] border-l-0 landscape:border-l border-t landscape:border-t-0 border-[#2a2a38]">
+              <div className="flex flex-row landscape:flex-col flex-1 landscape:flex-none landscape:w-36 bg-[#0e0e12] border-l-0 landscape:border-l border-t landscape:border-t-0 border-[#2a2a38]">
                 <button
                   onClick={goNextSong}
                   className="flex-1 flex items-center justify-center hover:bg-[#1a1a24] active:bg-[#22222e] transition-colors border-r landscape:border-r-0 landscape:border-b border-[#2a2a38]"
