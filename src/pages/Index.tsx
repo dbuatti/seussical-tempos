@@ -2000,24 +2000,24 @@ const Index = () => {
             setPerformanceIndex(Math.min(totalEntries - 1, currentIndex + 1));
           };
           const goPrevSong = () => {
-            const currentId = performanceEntries[currentIndex].songId;
+            const currentNum = String(performanceEntries[currentIndex].songNum);
             let firstOfCurrent = currentIndex;
-            while (firstOfCurrent > 0 && performanceEntries[firstOfCurrent - 1].songId === currentId) {
+            while (firstOfCurrent > 0 && String(performanceEntries[firstOfCurrent - 1].songNum) === currentNum) {
               firstOfCurrent--;
             }
             const target = firstOfCurrent - 1;
             if (target < 0) return;
-            const prevId = performanceEntries[target].songId;
+            const prevNum = String(performanceEntries[target].songNum);
             let firstOfPrev = target;
-            while (firstOfPrev > 0 && performanceEntries[firstOfPrev - 1].songId === prevId) {
+            while (firstOfPrev > 0 && String(performanceEntries[firstOfPrev - 1].songNum) === prevNum) {
               firstOfPrev--;
             }
             setPerformanceIndex(firstOfPrev);
           };
           const goNextSong = () => {
-            const currentId = performanceEntries[currentIndex].songId;
+            const currentNum = String(performanceEntries[currentIndex].songNum);
             for (let i = currentIndex + 1; i < totalEntries; i++) {
-              if (performanceEntries[i].songId !== currentId) {
+              if (String(performanceEntries[i].songNum) !== currentNum) {
                 setPerformanceIndex(i);
                 return;
               }
